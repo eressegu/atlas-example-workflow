@@ -1,0 +1,498 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2021-10-06 06:55:35 -0700">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/swc/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/swc/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/swc/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/swc/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/swc/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/swc/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/swc/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/swc/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="Software Carpentry - ATLAS CMake"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/swc/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/swc/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/swc/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/swc/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/swc/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+  <title>
+  Calibrate Your Jets &ndash; ATLAS CMake
+  </title>  
+
+  </head>
+  <body>
+
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body pre-alpha">
+    This lesson is still being designed and assembled (Pre-Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="https://software-carpentry.org" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/swc-icon-blue.svg" alt="Software Carpentry logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="../01-introduction/index.html">Introduction to ATLAS Offline Software</a></li>
+            
+            <li><a href="../02-workspace/index.html">Your Workspace</a></li>
+            
+            <li><a href="../03-toplevelcmake/index.html">The Top-Level CMakeLists.txt</a></li>
+            
+            <li><a href="../04-packagecmake/index.html">The Package CMakeLists.txt</a></li>
+            
+            <li><a href="../05-coffee/index.html">Coffee break!</a></li>
+            
+            <li><a href="../06-addcalibration/index.html">Calibrate Your Jets</a></li>
+            
+            <li><a href="../07-modifyingathena/index.html">Modyfing an Athena Package</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference.html">Reference</a></li>
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            <li><a href="../discuss/index.html">Discussion</a></li>
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	<li><a href="/edit//_episodes/06-addcalibration.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../05-coffee/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">ATLAS CMake</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../07-modifyingathena/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Calibrate Your Jets</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 20 min
+      <br/>
+      <strong>Exercises:</strong> 30 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How do you use Athena tools?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Learn about Athena tools.</p>
+</li>
+	
+	<li><p>Use the JetCalibTool from the Package to calibrate your jets.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<p>In this session, we’ll learn how to use the <code class="language-plaintext highlighter-rouge">JetCalibrationTool</code> to calibrate our jets. This will showcase the usefulness of having central packages accomplishing some of the common tasks.</p>
+
+<h1 id="using-the-calibration-tools">Using The Calibration Tools</h1>
+<p>The first step is to implement the jet calibration tool inside our <code class="language-plaintext highlighter-rouge">AnalysisPayload</code> program. This is done using the <code class="language-plaintext highlighter-rouge">JetCalibTools</code> package, maintained by the JetEtMiss group. They are the ones responsible for deriving the calibrations and systematics, among many things. You can find more information about the tool on the <a href="https://twiki.cern.ch/twiki/bin/view/AtlasProtected/ApplyJetCalibrationR21">ApplyJetCalibrationR21</a> twiki page. But don’t take this as an example of a standard ATLAS documentation. The JetEtMiss group is exceptionally good at documenting their work!</p>
+
+<p>The Athena framework provides a common interface for definining tools. They provide functionality for</p>
+<ul>
+  <li>Garbage collection via smart pointers.</li>
+  <li>Share instances between different parts of code via “public tools”. This reduces memory usage, as each instance can load sizeable calibration tables!</li>
+  <li>Abstract interface to allow for different tool implementation.</li>
+  <li>Configurability via properties, accessible via C++ code or Python configuration files (callled job options).</li>
+</ul>
+
+<h2 id="initialize-the-tool">Initialize the Tool</h2>
+<p>Start by including the necessary header files to the beginning of your <code class="language-plaintext highlighter-rouge">AnalysisPayload.cxx</code>. We will go over what code you are including next.</p>
+
+<div class="language-c++ source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// jet calibration</span>
+<span class="cp">#include &lt;AsgTools/AnaToolHandle.h&gt;
+#include &lt;JetCalibTools/IJetCalibrationTool.h&gt;
+</span></code></pre></div></div>
+
+<p>To use a tool, we wrap it inside the <code class="language-plaintext highlighter-rouge">asg::AnaToolHandle</code> class. This acts as a smart pointer, with ability to look for existing instances of the tool during initialization. We will refer to this object as a tool handle. This is a templated class, where the template is an interface class. The interface class determines what functions the tool should provide, without actually implementing them. This allows one to easily drop in alternate implementations. For the <code class="language-plaintext highlighter-rouge">JetCalibrationTool</code>, the interface class is <code class="language-plaintext highlighter-rouge">IJetCalibrationTool</code>. Add the following line near the beginning of your <code class="language-plaintext highlighter-rouge">main</code> function.</p>
+
+<div class="language-c++ source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">asg</span><span class="o">::</span><span class="n">AnaToolHandle</span><span class="o">&lt;</span><span class="n">IJetCalibrationTool</span><span class="o">&gt;</span> <span class="n">JetCalibrationTool_handle</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>So far, we have only declared the tool. We still need to initialize it and create an instance. As part of the initialization, you need to</p>
+<ul>
+  <li>tell it what implemtation to use,</li>
+  <li>configure any properties,</li>
+  <li>instantiate the object.</li>
+</ul>
+
+<p>Start by telling the tool handle that we want to use the <code class="language-plaintext highlighter-rouge">JetCalibrationTool</code> implementation with the name “MyCalibrationTool”. The name is important for tool reuse. If another tool handle already exists with the same name, the instance of the tool is shared.</p>
+<div class="language-c++ source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">JetCalibrationTool_handle</span><span class="p">.</span><span class="n">setTypeAndName</span><span class="p">(</span><span class="s">"JetCalibrationTool/MyCalibrationTool"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Next let’s configure the tool itself using the latest and greatest available calibration. You can find what the fields mean in the <a href="https://twiki.cern.ch/twiki/bin/view/AtlasProtected/ApplyJetCalibrationR21">JetCalibrationTool</a> documentation.</p>
+<div class="language-c++ source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">JetCalibrationTool_handle</span><span class="p">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">"JetCollection"</span><span class="p">,</span><span class="s">"AntiKt4EMTopo"</span>                                                  <span class="p">);</span>
+<span class="n">JetCalibrationTool_handle</span><span class="p">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">"ConfigFile"</span>   <span class="p">,</span><span class="s">"JES_MC16Recommendation_Consolidated_EMTopo_Apr2019_Rel21.config"</span><span class="p">);</span>
+<span class="n">JetCalibrationTool_handle</span><span class="p">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">"CalibSequence"</span><span class="p">,</span><span class="s">"JetArea_Residual_EtaJES_GSC_Smear"</span>                              <span class="p">);</span>
+<span class="n">JetCalibrationTool_handle</span><span class="p">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">"CalibArea"</span>    <span class="p">,</span><span class="s">"00-04-82"</span>                                                       <span class="p">);</span>
+<span class="n">JetCalibrationTool_handle</span><span class="p">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s">"IsData"</span>       <span class="p">,</span><span class="nb">false</span>                                                            <span class="p">);</span>
+</code></pre></div></div>
+
+<p>Finally, create an instance of the <code class="language-plaintext highlighter-rouge">JetCalibrationTool</code> class and configure it using the information specified above.</p>
+<div class="language-c++ source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">JetCalibrationTool_handle</span><span class="p">.</span><span class="n">retrieve</span><span class="p">();</span>
+</code></pre></div></div>
+
+<h2 id="use-the-tool">Use the Tool</h2>
+<p>We next need to loop over all jets in each event and apply the calibration to them before storing them. Locate your jet loop, and add a call to our <code class="language-plaintext highlighter-rouge">JetCalibrationTool_handle</code> to calibrate each jet.</p>
+
+<div class="language-c++ source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// calibrate the jet</span>
+<span class="n">xAOD</span><span class="o">::</span><span class="n">Jet</span> <span class="o">*</span><span class="n">calibratedjet</span><span class="p">;</span>
+<span class="n">JetCalibrationTool_handle</span><span class="o">-&gt;</span><span class="n">calibratedCopy</span><span class="p">(</span><span class="o">*</span><span class="n">jet</span><span class="p">,</span><span class="n">calibratedjet</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Once you have calibrated it, save that instead of the original <code class="language-plaintext highlighter-rouge">jet</code> object.</p>
+<div class="language-c++ source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jets_raw</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="o">*</span><span class="n">calibratedjet</span><span class="p">);</span>
+
+<span class="c1">// perform kinematic selections and store in vector of "selected jets"</span>
+<span class="k">if</span><span class="p">(</span><span class="n">jet_selector</span><span class="p">.</span><span class="n">isJetGood</span><span class="p">(</span><span class="n">calibratedjet</span><span class="p">)){</span>
+  <span class="n">jets_kin</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="o">*</span><span class="n">calibratedjet</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Finally delete the pointer to de-allocate the memory associated with the <code class="language-plaintext highlighter-rouge">calibratedjet</code>.</p>
+<div class="language-c++ source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// cleanup</span>
+<span class="k">delete</span> <span class="n">calibratedjet</span><span class="p">;</span>
+</code></pre></div></div>
+
+<blockquote class="challenge">
+  <h2 id="memory-management-quiz">Memory Management Quiz</h2>
+
+  <p>Why do we need to delete the <code class="language-plaintext highlighter-rouge">calibratedjet</code> object?</p>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+
+    <p>We store our calibrated jets in side a <code class="language-plaintext highlighter-rouge">std::vector&lt;xAOD::Jet&gt;</code>, which is a list of jet objects and not pointers. Thus when we add a jet to the list, we allocate new memory with a copy of the value pointed to by <code class="language-plaintext highlighter-rouge">calibratedjet</code>.</p>
+
+    <p>When writing your analysis code, you might want to take a look at shallow copies. These will store a copy of your <code class="language-plaintext highlighter-rouge">jet</code> object, but only allocate memory for attributes that you change. Thus being more memory efficient.</p>
+  </blockquote>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="multiple-histograms">Multiple Histograms</h2>
+
+  <p>Modify the <code class="language-plaintext highlighter-rouge">AnalysisPayload</code> program to store the histograms for both calibrated and uncalibrated jet. You might want to create a new class called <code class="language-plaintext highlighter-rouge">JetHistograms</code> that manages the two jet histograms for a given jet collection.</p>
+
+</blockquote>
+
+<h1 id="updating-the-dependenciy-list">Updating the Dependenciy List</h1>
+<p><code class="language-plaintext highlighter-rouge">AnalysisPayload</code> now uses code from two central packages; <code class="language-plaintext highlighter-rouge">AsgTools</code> and <code class="language-plaintext highlighter-rouge">JetCalibToolsLib</code>. We need to update our executable target to let CMake know that these are now dependencies.</p>
+
+<blockquote class="solution">
+  <h2 id="solution-1">Solution</h2>
+
+  <p>Your <code class="language-plaintext highlighter-rouge">AnalysisPayload/CMakeLists.txt</code> should now contain the following.</p>
+
+  <div class="language-cmake source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">ATLAS_ADD_EXECUTABLE</span> <span class="p">(</span> AnalysisPayload util/AnalysisPayload.cxx
+                     LINK_LIBRARIES  xAODEventInfo
+                                     xAODRootAccess
+                                     xAODJet
+                                     JetSelectionHelperLib
+                                     AsgTools
+                                     JetCalibToolsLib<span class="p">)</span>
+</code></pre></div>  </div>
+
+</blockquote>
+
+<h1 id="look-at-the-results">Look at the Results</h1>
+<p>Before running your new code, make a copy of your old results. We will be compare the new histograms with the old ones to understand the effect of calibration.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cp </span>myOutputFile.root uncalibOutputFile.root
+</code></pre></div></div>
+
+<p>Then compile your new code and run!</p>
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>There are nice official tools to apply calibrations.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../05-coffee/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../07-modifyingathena/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <div class="row">
+    <div class="col-md-6 copyright" align="left">
+	
+	Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2018–2021
+	by <a href="https://carpentries.org/">The Carpentries</a>
+        <br>
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2016–2018
+	by <a href="https://software-carpentry.org">Software Carpentry Foundation</a>
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	<a href="/edit//_episodes/06-addcalibration.md" data-checker-ignore>Edit on GitHub</a>
+	
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:kkrizka@gmail.com">Contact</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" align="center">
+      Using <a href="https://github.com/carpentries/styles/">The Carpentries style</a>
+      version <a href="https://github.com/carpentries/styles/releases/tag/v9.5.3">9.5.3</a>.
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

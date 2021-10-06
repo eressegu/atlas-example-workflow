@@ -1,0 +1,448 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2021-10-06 06:55:35 -0700">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/syntax.css" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="../assets/favicons/swc/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/favicons/swc/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/favicons/swc/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/favicons/swc/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="../assets/favicons/swc/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="../assets/favicons/swc/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="../assets/favicons/swc/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../assets/favicons/swc/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="Software Carpentry - ATLAS CMake"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="../assets/favicons/swc/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="../assets/favicons/swc/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="../assets/favicons/swc/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="../assets/favicons/swc/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="../assets/favicons/swc/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+  <title>
+  Modyfing an Athena Package &ndash; ATLAS CMake
+  </title>  
+
+  </head>
+  <body>
+
+    
+
+
+<div class="panel panel-default life-cycle">
+  <div id="life-cycle" class="panel-body pre-alpha">
+    This lesson is still being designed and assembled (Pre-Alpha version)
+  </div>
+</div>
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="https://software-carpentry.org" class="pull-left">
+        <img class="navbar-logo" src="../assets/img/swc-icon-blue.svg" alt="Software Carpentry logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="../index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="../CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="../setup.html">Setup</a></li>
+
+        
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            <li><a href="../01-introduction/index.html">Introduction to ATLAS Offline Software</a></li>
+            
+            <li><a href="../02-workspace/index.html">Your Workspace</a></li>
+            
+            <li><a href="../03-toplevelcmake/index.html">The Top-Level CMakeLists.txt</a></li>
+            
+            <li><a href="../04-packagecmake/index.html">The Package CMakeLists.txt</a></li>
+            
+            <li><a href="../05-coffee/index.html">Coffee break!</a></li>
+            
+            <li><a href="../06-addcalibration/index.html">Calibrate Your Jets</a></li>
+            
+            <li><a href="../07-modifyingathena/index.html">Modyfing an Athena Package</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="../aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="../reference.html">Reference</a></li>
+            
+            <li><a href="../about/index.html">About</a></li>
+            
+            <li><a href="../discuss/index.html">Discussion</a></li>
+            
+            <li><a href="../figures/index.html">Figures</a></li>
+            
+            <li><a href="../guide/index.html">Instructor Notes</a></li>
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="../LICENSE.html">License</a></li>
+	
+	<li><a href="/edit//_episodes/07-modifyingathena.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../06-addcalibration/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">ATLAS CMake</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span><span class="sr-only">lesson home</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Modyfing an Athena Package</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 20 min
+      <br/>
+      <strong>Exercises:</strong> 20 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How do I modify a package inside the athena repository?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Learn about sparse git checkouts.</p>
+</li>
+	
+	<li><p>Learn about <code class="language-plaintext highlighter-rouge">package_filters.txt</code>.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<p>In this section, we will learn how to modify a package in the athena repository. Part of making changes is compiling them for testing.</p>
+
+<p>Start by pointing your web browser to the <a href="https://gitlab.cern.ch/atlas/athena">official; athena repository</a> and making a fork. As we learned yesterday, you should always make a fork if you want to modify other people’s code. One you made your fork, made a clone of it. The last line tells git to checkout the <code class="language-plaintext highlighter-rouge">21.2</code> branch. This is the base for the release that we are working with.</p>
+
+<div class="language-bash source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from source/ directory</span>
+git clone ssh://git@gitlab.cern.ch:7999/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/athena.git
+<span class="nb">cd </span>athena
+git checkout 21.2
+</code></pre></div></div>
+
+<p>Do not try to compile your project now. The athena repository contains many packages. Compiling it will take forever. Instead we will look at two ways to copmile only specific packages:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">package_filters.txt</code>, which is an ATLAS CMake addition to take a list of packages you want to compile,</li>
+  <li>sparce checkouts, which is a git feature to only checkout specific files.</li>
+</ul>
+
+<h1 id="the-package_filterstxt-method">The <code class="language-plaintext highlighter-rouge">package_filters.txt</code> Method</h1>
+
+<p>The <code class="language-plaintext highlighter-rouge">ATLAS_PROJECT</code> command, that finds all of your packages, can be tune by the use of a <code class="language-plaintext highlighter-rouge">package_filters.txt</code> file. This file can contain specific instructions for what packages to ignore and which ones to compile. Create a <code class="language-plaintext highlighter-rouge">sources/package_filters.txt</code> file with the following contents.</p>
+
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+ athena/Reconstruction/Jet/JetCalibTools
+- athena/.*
++ .*
+</code></pre></div></div>
+
+<p>Then clone your fork into the <code class="language-plaintext highlighter-rouge">source/</code> directory. Make sure to change <code class="language-plaintext highlighter-rouge">kkrizka</code> to your lxplus username.</p>
+
+<p>The first column is whether to compile a package (<code class="language-plaintext highlighter-rouge">+</code>) or to ignore it (<code class="language-plaintext highlighter-rouge">-</code>). You can use regular expressions to select multiple packages. In this example, the first line says we want to compile <code class="language-plaintext highlighter-rouge">JetCalibTools</code> package, the second line says ignore all athena packages not already listed and the third line says compile all other packages.</p>
+
+<p>Now you need to re-run CMake, telling it explicitely where your package filter file is located.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from build/ directory</span>
+cmake <span class="nt">-DATLAS_PACKAGE_FILTER_FILE</span><span class="o">=</span>../source/package_filters.txt ../source
+</code></pre></div></div>
+
+<p>Now run <code class="language-plaintext highlighter-rouge">make</code>. It should finish quickly!</p>
+
+<h1 id="the-sparse-checkout-method">The Sparse Checkout Method</h1>
+<p>The sparse checkout is a git feature that allows you to only “checkout” files that you want to the file system. In our case, we will only checkout the <code class="language-plaintext highlighter-rouge">JetCalibTools</code> package. As you will see, it is a more hidden feature of git and requires some manual work.</p>
+
+<p>The first step is to enable sparse checkout functionality inside your athena clone.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from source/athena directory</span>
+git config core.sparsecheckout <span class="nb">true</span>
+</code></pre></div></div>
+
+<p>Then define the list of directories or files that you want to be explicitely checked out. This list is stored inside the <code class="language-plaintext highlighter-rouge">.git/info/sparse-checkout</code> file. The <code class="language-plaintext highlighter-rouge">.git/</code> folder is inside the root of your git repository and contains all of your settings and repository history.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from source/athena directory</span>
+<span class="nb">echo </span>Reconstruction/Jet/JetCalibTools/ <span class="o">&gt;</span> .git/info/sparse-checkout
+</code></pre></div></div>
+
+<p>Finally tell git to redo the checkout of your branch. You should now only have the <code class="language-plaintext highlighter-rouge">Reconstruction/Jet/JetCalibTools/</code> package leftover.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from source/athena directory</span>
+git checkout 21.2
+<span class="nb">ls</span>
+</code></pre></div></div>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reconstruction
+</code></pre></div></div>
+
+<p>Finally you need to re-run CMake to register the new package and compile using make.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from build/ directory</span>
+cmake ../source
+make
+</code></pre></div></div>
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>Don’t compile the entire athena repository. Use either sparse checkouts or <code class="language-plaintext highlighter-rouge">package_filters.txt</code> to specify what packages you want to compile.</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../06-addcalibration/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span><span class="sr-only">lesson home</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <div class="row">
+    <div class="col-md-6 copyright" align="left">
+	
+	Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2018–2021
+	by <a href="https://carpentries.org/">The Carpentries</a>
+        <br>
+        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2016–2018
+	by <a href="https://software-carpentry.org">Software Carpentry Foundation</a>
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+	
+	<a href="/edit//_episodes/07-modifyingathena.md" data-checker-ignore>Edit on GitHub</a>
+	
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:kkrizka@gmail.com">Contact</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" align="center">
+      Using <a href="https://github.com/carpentries/styles/">The Carpentries style</a>
+      version <a href="https://github.com/carpentries/styles/releases/tag/v9.5.3">9.5.3</a>.
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/lesson.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-37305346-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
