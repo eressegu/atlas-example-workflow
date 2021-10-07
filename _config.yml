@@ -26,7 +26,7 @@ kind: "lesson"
 # Magic to make URLs resolve both locally and on GitHub.
 # See https://help.github.com/articles/repository-metadata-on-github-pages/.
 # Please don't change it: <USERNAME>/<PROJECT> is correct.
-repository: eressegu/atlas-example-workfloow
+repository: eressegu/atlas-example-workflow
 
 # Email address, no mailto:
 email: "eresseguie@gmail.com"
