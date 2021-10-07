@@ -63,7 +63,7 @@
 	<![endif]-->
 
   <title>
-  Discussion &ndash; ATLAS Example Workflow
+  Adding object kinematic selection modules &ndash; ATLAS Example Workflow
   </title>  
 
   </head>
@@ -168,7 +168,7 @@
 	
         <li><a href="../LICENSE.html">License</a></li>
 	
-	<li><a href="/edit//_extras/discuss.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	<li><a href="/edit//_episodes/02-submodule.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
 	
       </ul>
       <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
@@ -194,13 +194,178 @@
 
 
 
-<h1 class="maintitle"><a href="../index.html">ATLAS Example Workflow</a>: Discussion</h1>
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../01-introduction/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="../">ATLAS Example Workflow</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../03-analyisorganization/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
 
 <article>
-<p>FIXME</p>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Adding object kinematic selection modules</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
 
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 5 min
+      <br/>
+      <strong>Exercises:</strong> 15 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How do I prepare a workspace and add two new modules?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Review concepts learned in previous lessons: <code class="language-plaintext highlighter-rouge">git</code>, <code class="language-plaintext highlighter-rouge">cmake</code>, <code class="language-plaintext highlighter-rouge">make</code>.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="preparing-your-repository-and-compiling-existing-code">Preparing your repository and compiling existing code</h1>
+
+<p>Before making modifications, it is always good to compile the exisiting directory to make sure there are no errors.</p>
+
+<p>You will need to first create two folders: one for the compiled binaries (<code class="language-plaintext highlighter-rouge">build</code>), one for the analysis results (<code class="language-plaintext highlighter-rouge">run</code>).</p>
+
+<p>Let’s create our two folders:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>build/
+<span class="nb">mkdir </span>run/
+</code></pre></div></div>
+
+<p>You should then build and compile your code.</p>
+
+<blockquote class="solution">
+  <h2 id="solution">Solution</h2>
+
+  <p>Here is the sequence of commands to build and compile your code.</p>
+
+  <div class="language-shell source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>build/
+cmake ../source
+make
+<span class="nb">cd</span> ..
+<span class="nb">source </span>build/x86_64-centos7-gcc8-opt/setup.sh
+</code></pre></div>  </div>
+
+</blockquote>
+
+<p>You can also run your code now if you would like before moving to the next step.</p>
+
+<h1 id="adding-two-new-submodules">Adding two new submodules</h1>
+
+<p>The MC process we are studying does not only have b-jets, it also has leptons. For leptons, we’ll only consider electrons and muons.</p>
+
+<p>For the jet selection, we added the git submodule <code class="language-plaintext highlighter-rouge">JetSelectionHelper</code> in a previous module. We will now add two new submodules for the electron and muon selections: <a href="https://gitlab.cern.ch/eressegu/ElectronSelectionHelper.git source/ElectronSelectionHelper"><code class="language-plaintext highlighter-rouge">ElectronSelectionHelper</code></a> and the <a href="https://gitlab.cern.ch/eressegu/MuonSelectionHelper.git source/MuonSelectionHelper"><code class="language-plaintext highlighter-rouge">MuonSelectionHelper</code></a>. We also want to add both of these subomdules to the source folder.</p>
+
+<blockquote class="solution">
+  <h2 id="solution-1">Solution</h2>
+
+  <p>The commands to add the submodules are the following.</p>
+
+  <div class="language-shell source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git submodule add https://gitlab.cern.ch/eressegu/MuonSelectionHelper.git <span class="nb">source</span>/MuonSelectionHelper
+git submodule add https://gitlab.cern.ch/eressegu/ElectronSelectionHelper.git <span class="nb">source</span>/ElectronSelectionHelper
+</code></pre></div>  </div>
+
+</blockquote>
+
+<p>Your source folder should look like this:</p>
+
+<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AnalysisPayload  CMakeLists.txt  ElectronSelectionHelper  JetSelectionHelper  MuonSelectionHelper
+</code></pre></div></div>
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>We can add more than one submodule</p>
+</li>
+    
+  </ul>
+</blockquote>
 
 </article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="../01-introduction/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="../03-analyisorganization/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
 
       
       
@@ -223,7 +388,7 @@
     </div>
     <div class="col-md-6 help-links" align="right">
 	
-	<a href="/edit//_extras/discuss.md" data-checker-ignore>Edit on GitHub</a>
+	<a href="/edit//_episodes/02-submodule.md" data-checker-ignore>Edit on GitHub</a>
 	
 	/
 	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>

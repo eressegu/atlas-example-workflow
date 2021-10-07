@@ -63,7 +63,7 @@
 	<![endif]-->
 
   <title>
-  Coffee break! &ndash; ATLAS Example Workflow
+  Integrating submodules &ndash; ATLAS Example Workflow
   </title>  
 
   </head>
@@ -168,7 +168,7 @@
 	
         <li><a href="../LICENSE.html">License</a></li>
 	
-	<li><a href="/edit//_episodes/05-coffee.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	<li><a href="/edit//_episodes/04-integratingsubmodules.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
 	
       </ul>
       <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
@@ -200,7 +200,7 @@
   <div class="col-xs-1">
     <h3 class="text-left">
       
-      <a href="../04-integratingsubmodules/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      <a href="../03-analyisorganization/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
       
     </h3>
   </div>
@@ -212,7 +212,7 @@
   <div class="col-xs-1">
     <h3 class="text-right">
       
-      <a href="../06-analysisselection/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      <a href="../05-coffee/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
       
     </h3>
   </div>
@@ -223,7 +223,7 @@
   <div class="col-md-1">
   </div>
   <div class="col-md-10">
-    <h1 class="maintitle">Coffee break!</h1>
+    <h1 class="maintitle">Integrating submodules</h1>
   </div>
   <div class="col-md-1">
   </div>
@@ -235,21 +235,18 @@
 
   <div class="row">
     <div class="col-md-3">
-      <strong>Teaching:</strong> 0 min
+      <strong>Teaching:</strong> 10 min
       <br/>
-      <strong>Exercises:</strong> 0 min
+      <strong>Exercises:</strong> 30 min
     </div>
     <div class="col-md-9">
       <strong>Questions</strong>
       <ul>
 	
-	<li><p>How much coffee can you drink in 20 minutes?</p>
+	<li><p>How can I integrate my submodules into the analysis code?</p>
 </li>
 	
-	<li><p>Is Peet’s coffee better than Starbuck’s coffee?</p>
-</li>
-	
-	<li><p>Did you make any cookies?</p>
+	<li><p>What changes to cmake will I need to do to add the new libraries?</p>
 </li>
 	
       </ul>
@@ -263,13 +260,10 @@
       <strong>Objectives</strong>
       <ul>
 	
-	<li><p>Drink coffee.</p>
+	<li><p>Retrieve additional objects from the ATLAS EDM</p>
 </li>
 	
-	<li><p>Eat cookies.</p>
-</li>
-	
-	<li><p>Talk to people (Cafeteria room!).</p>
+	<li><p>Review how to make changes to cmake</p>
 </li>
 	
       </ul>
@@ -278,9 +272,111 @@
 
 </blockquote>
 
-<center>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ustoPh3DggY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-</center>
+<h1 id="retrieving-new-objects-in-analysispayload">Retrieving new objects in AnalysisPayload</h1>
+
+<p>We added two submodules to help with the electron and muon selections. Now we need to properly add them to our code so we can retrieve those objects and use them in our analysis.</p>
+
+<h2 id="updating-libraries">Updating libraries</h2>
+
+<p>We need to add the electron and muon libaries from the ATLAS EDM. We want to retrieve electron and muon containers from the event store, just like we did for jets.</p>
+
+<p>In the block, <code class="language-plaintext highlighter-rouge">ATLAS EDM functionality</code>, you should add</p>
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include "xAODEgamma/ElectronContainer.h"
+#include "xAODMuon/MuonContainer.h"
+</code></pre></div></div>
+
+<p>To make use of the helper functions we added in the submodules, we also need to our new <code class="language-plaintext highlighter-rouge">HelperSelection</code> libaries under <code class="language-plaintext highlighter-rouge">#include "JetSelectionHelper/JetSelectionHelper.h"</code></p>
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include "ElectronSelectionHelper/ElectronSelectionHelper.h"
+#include "MuonSelectionHelper/MuonSelectionHelper.h"
+</code></pre></div></div>
+
+<h2 id="retrieving-new-objects">Retrieving new objects</h2>
+
+<p>Just like we retrieved the jet container from the event store, we need to do the same for the electrons and the muons.</p>
+
+<p>Electrons are retrieved from the <code class="language-plaintext highlighter-rouge">ElectronContainer</code> as follows</p>
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const xAOD::ElectronContainer *electrons = nullptr;
+event.retrieve(electrons, "Electrons" ) ;
+</code></pre></div></div>
+
+<p>The muons are retrieved from the <code class="language-plaintext highlighter-rouge">MuonContainer</code> as follows</p>
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>const xAOD::MuonContainer *muons = nullptr;
+event.retrieve(muons, "Muons") ;
+</code></pre></div></div>
+
+<p>Normally, we would want to calibrate the electrons and the muons, just as we did for the jets; however, we will not do this today.</p>
+
+<p>If you are interested in how to retrieve additional objects and their calibrations, you can refer to this <a href="https://twiki.cern.ch/twiki/bin/view/AtlasComputing/SoftwareTutorialxAODAnalysisInROOT">xAOD analysis tutorial twikli</a>.</p>
+
+<h2 id="selecting-electrons">Selecting electrons</h2>
+
+<p>Now that we have retrieved the electrons and muons, we want to save the electron and muon vectors that are present in our dataset as well as those that pass the pt and eta requirements defined in the <code class="language-plaintext highlighter-rouge">ElectronSelectionHelper</code> and <code class="language-plaintext highlighter-rouge">MuonSelectionHelper</code>.</p>
+
+<p>Let us first declare the <code class="language-plaintext highlighter-rouge">ElectronSelectionHelper</code> tool, similar to what was done for jets.</p>
+
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ElectronSelectionHelper myElectronTool;
+</code></pre></div></div>
+
+<p>We can then create vectors for the electrons for the electrons in the dataset <code class="language-plaintext highlighter-rouge">electrons_raw</code> and those that pass the requirements in <code class="language-plaintext highlighter-rouge">ElectronSelectionHelper</code>.</p>
+
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>std::vector&lt;xAOD::Electron&gt; electrons_raw;
+std::vector&lt;xAOD::Electron&gt; electrons_kin;
+</code></pre></div></div>
+
+<p>We can loop over our electron container and fill electrons into the vectors, similar to what is done for the jets.</p>
+
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for(const xAOD::Electron* electron : *electrons) {
+    electrons_raw.push_back(*electron);
+
+    // perform kinematic selections and store in vector of "selected electrons"                                                
+    if( myElectronTool.isElectronGood(electron) ){
+        electrons_kin.push_back(*electron);
+    }
+}
+</code></pre></div></div>
+
+<p>In the above <code class="language-plaintext highlighter-rouge">for loop</code>, we can add a printout of electron kinematics that we will use later on.</p>
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>std::cout &lt;&lt; "Electron : " &lt;&lt; electron-&gt;pt() &lt;&lt; "\t" &lt;&lt; electron-&gt;eta() &lt;&lt; "\t" &lt;&lt; electron-&gt;phi() &lt;&lt; "\t" &lt;&lt; electron-&gt;m() &lt;&lt; "\t" &lt;&lt; electron-&gt;charge() &lt;&lt; std::endl;
+</code></pre></div></div>
+
+<p>The only variable that is new in this printout for electrons, as opposed to jets, is the <code class="language-plaintext highlighter-rouge">charge</code>.</p>
+
+<blockquote class="challenge">
+  <h2 id="adding-muons">Adding muons</h2>
+
+  <p>Modify the <code class="language-plaintext highlighter-rouge">AnalysisPayload</code> program to retrieve loop over the <code class="language-plaintext highlighter-rouge">muons</code> collection and store the muons into two vectors: one for all muons, another for those that pass the <code class="language-plaintext highlighter-rouge">isMuonGood</code> selection from <code class="language-plaintext highlighter-rouge">MuonSelectionHelper</code>.</p>
+
+</blockquote>
+
+<h1 id="updating-the-cmakelists">Updating the CMakeLists</h1>
+
+<p>In the CMake module, you saw that when you added the <code class="language-plaintext highlighter-rouge">jet calibration</code> libraries, you needed to update the <code class="language-plaintext highlighter-rouge">CMakeLists.txt</code> in the <code class="language-plaintext highlighter-rouge">AnalysisPayload</code> folder, otherwise you would get a build error.</p>
+
+<p>Since we have added 2 submodules and included them in  <code class="language-plaintext highlighter-rouge">AnalysisPayload</code>, we also need to add them to the <code class="language-plaintext highlighter-rouge">CMakeLists.txt</code>.</p>
+
+<p>The libraries we need to link are <code class="language-plaintext highlighter-rouge">xAODEgamma</code>, <code class="language-plaintext highlighter-rouge">xAODMuon</code>, <code class="language-plaintext highlighter-rouge">ElectronSelectionHelperLib</code>, and <code class="language-plaintext highlighter-rouge">MuonSelectionHelperLib</code>.</p>
+
+<blockquote class="solution">
+  <h2 id="solution">Solution</h2>
+
+  <p>Your <code class="language-plaintext highlighter-rouge">AnalysisPayload/CMakeLists.txt</code> should now contain the following.</p>
+
+  <div class="language-cmake source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">ATLAS_ADD_EXECUTABLE</span> <span class="p">(</span> AnalysisPayload utils/AnalysisPayload.cxx
+INCLUDE_DIRS <span class="si">${</span><span class="nv">ROOT_INCLUDE_DIRS</span><span class="si">}</span>
+LINK_LIBRARIES <span class="si">${</span><span class="nv">ROOT_LIBRARIES</span><span class="si">}</span>
+                xAODEventInfo
+                xAODRootAccess
+                xAODJet
+                xAODEgamma
+                xAODMuon
+                AsgTools
+                JetCalibToolsLib
+                JetSelectionHelperLib
+                ElectronSelectionHelperLib
+                MuonSelectionHelperLib<span class="p">)</span>
+</code></pre></div>  </div>
+
+</blockquote>
 
 
 
@@ -288,7 +384,10 @@
   <h2>Key Points</h2>
   <ul>
     
-    <li><p>Coffee sucks, drink tea.</p>
+    <li><p>When we add a new submodule, we need to update cmake.</p>
+</li>
+    
+    <li><p>Running over xAODs/DAODs is not that scary</p>
 </li>
     
   </ul>
@@ -315,7 +414,7 @@
   <div class="col-xs-1">
     <h3 class="text-left">
       
-      <a href="../04-integratingsubmodules/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      <a href="../03-analyisorganization/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
       
     </h3>
   </div>
@@ -325,7 +424,7 @@
   <div class="col-xs-1">
     <h3 class="text-right">
       
-      <a href="../06-analysisselection/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      <a href="../05-coffee/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
       
     </h3>
   </div>
@@ -353,7 +452,7 @@
     </div>
     <div class="col-md-6 help-links" align="right">
 	
-	<a href="/edit//_episodes/05-coffee.md" data-checker-ignore>Edit on GitHub</a>
+	<a href="/edit//_episodes/04-integratingsubmodules.md" data-checker-ignore>Edit on GitHub</a>
 	
 	/
 	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>

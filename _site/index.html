@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-06 06:55:35 -0700">
+    <meta http-equiv="last-modified" content="2021-10-07 06:26:28 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -46,7 +46,7 @@
     <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-128.png" sizes="128x128" />
-    <meta name="application-name" content="Software Carpentry - ATLAS CMake"/>
+    <meta name="application-name" content="Software Carpentry - ATLAS Example Workflow"/>
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="./assets/favicons/swc/mstile-144x144.png" />
     <meta name="msapplication-square70x70logo" content="./assets/favicons/swc/mstile-70x70.png" />
@@ -63,7 +63,7 @@
 	<![endif]-->
 
   <title>
-  ATLAS CMake
+  ATLAS Example Workflow
   </title>  
 
   </head>
@@ -126,19 +126,19 @@
           <a href="./" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
           <ul class="dropdown-menu">
             
-            <li><a href="./01-introduction/index.html">Introduction to ATLAS Offline Software</a></li>
+            <li><a href="./01-introduction/index.html">Introduction to ATLAS workflow</a></li>
             
-            <li><a href="./02-workspace/index.html">Your Workspace</a></li>
+            <li><a href="./02-submodule/index.html">Adding object kinematic selection modules</a></li>
             
-            <li><a href="./03-toplevelcmake/index.html">The Top-Level CMakeLists.txt</a></li>
+            <li><a href="./03-analyisorganization/index.html">Understanding the analysis organization</a></li>
             
-            <li><a href="./04-packagecmake/index.html">The Package CMakeLists.txt</a></li>
+            <li><a href="./04-integratingsubmodules/index.html">Integrating submodules</a></li>
             
             <li><a href="./05-coffee/index.html">Coffee break!</a></li>
             
-            <li><a href="./06-addcalibration/index.html">Calibrate Your Jets</a></li>
+            <li><a href="./06-analysisselection/index.html">Analysis selection</a></li>
             
-            <li><a href="./07-modifyingathena/index.html">Modyfing an Athena Package</a></li>
+            <li><a href="./07-cutflow/index.html">Cutflow</a></li>
             
 	    <li role="separator" class="divider"></li>
             <li><a href="./aio/index.html">All in one page (Beta)</a></li>
@@ -194,7 +194,7 @@
 
 
 
-<h1 class="maintitle"><a href="./index.html">ATLAS CMake</a></h1>
+<h1 class="maintitle"><a href="./index.html">ATLAS Example Workflow</a></h1>
 
 <article>
   <p>The ATLAS software, called <em>athena</em>, itself is a very large project containing many packages. To help define all of the dependencies, CMake is used to manage the build process. To make a developer’s life easier, athena defines several custom macros. This lesson describes how to use these custom macros to build an user package.</p>
@@ -202,11 +202,10 @@
 <blockquote class="prereq">
   <h2 id="prerequisites">Prerequisites</h2>
 
-  <p>This assumes that you’ll have a basic knowledge of CMake, for example:</p>
+  <p>This assumes that you’ll have a basic knowledge of git, cmake, for example:</p>
 
   <ol>
-    <li>What out-of-source builds are</li>
-    <li>How to write a simple <code class="language-plaintext highlighter-rouge">CMakeList.txt</code></li>
+    <li>How to add git submodules</li>
     <li>How to generate a <code class="language-plaintext highlighter-rouge">Makefile</code> from a <code class="language-plaintext highlighter-rouge">CMakeLists.txt</code></li>
   </ol>
 
@@ -267,13 +266,19 @@
       <td class="col-md-2">00:00</td>
       <td class="col-md-3">
         
-	1. <a href="./01-introduction/index.html">Introduction to ATLAS Offline Software</a>
+	1. <a href="./01-introduction/index.html">Introduction to ATLAS workflow</a>
       </td>
       <td class="col-md-7">
         
           
             
-              What is atlas/athena and what release should I be using?
+              What process are we looking at?
+
+              
+              <br/>
+              
+            
+              What is the workflow used for?
 
               
             
@@ -291,13 +296,13 @@
       <td class="col-md-2">00:20</td>
       <td class="col-md-3">
         
-	2. <a href="./02-workspace/index.html">Your Workspace</a>
+	2. <a href="./02-submodule/index.html">Adding object kinematic selection modules</a>
       </td>
       <td class="col-md-7">
         
           
             
-              How should I organize my code?
+              How do I prepare a workspace and add two new modules?
 
               
             
@@ -312,16 +317,22 @@
     
     <tr>
       
-      <td class="col-md-2">01:00</td>
+      <td class="col-md-2">00:40</td>
       <td class="col-md-3">
         
-	3. <a href="./03-toplevelcmake/index.html">The Top-Level CMakeLists.txt</a>
+	3. <a href="./03-analyisorganization/index.html">Understanding the analysis organization</a>
       </td>
       <td class="col-md-7">
         
           
             
-              How do I tell CMake about all my packages?
+              How can I structure my analysis code?
+
+              
+              <br/>
+              
+            
+              How can I make kinematic selection on our objects?
 
               
             
@@ -336,16 +347,22 @@
     
     <tr>
       
-      <td class="col-md-2">01:30</td>
+      <td class="col-md-2">01:10</td>
       <td class="col-md-3">
         
-	4. <a href="./04-packagecmake/index.html">The Package CMakeLists.txt</a>
+	4. <a href="./04-integratingsubmodules/index.html">Integrating submodules</a>
       </td>
       <td class="col-md-7">
         
           
             
-              How do I compile my package?
+              How can I integrate my submodules into the analysis code?
+
+              
+              <br/>
+              
+            
+              What changes to cmake will I need to do to add the new libraries?
 
               
             
@@ -360,7 +377,7 @@
     
     <tr>
       
-      <td class="col-md-2">02:10</td>
+      <td class="col-md-2">01:50</td>
       <td class="col-md-3">
         
 	5. <a href="./05-coffee/index.html">Coffee break!</a>
@@ -396,16 +413,16 @@
     
     <tr>
       
-      <td class="col-md-2">02:10</td>
+      <td class="col-md-2">01:50</td>
       <td class="col-md-3">
         
-	6. <a href="./06-addcalibration/index.html">Calibrate Your Jets</a>
+	6. <a href="./06-analysisselection/index.html">Analysis selection</a>
       </td>
       <td class="col-md-7">
         
           
             
-              How do you use Athena tools?
+              How can I create a simple analysis selection?
 
               
             
@@ -420,16 +437,16 @@
     
     <tr>
       
-      <td class="col-md-2">03:00</td>
+      <td class="col-md-2">02:30</td>
       <td class="col-md-3">
         
-	7. <a href="./07-modifyingathena/index.html">Modyfing an Athena Package</a>
+	7. <a href="./07-cutflow/index.html">Cutflow</a>
       </td>
       <td class="col-md-7">
         
           
             
-              How do I modify a package inside the athena repository?
+              How do I use all my variables to construct an analysis?
 
               
             
@@ -443,7 +460,7 @@
   
   <tr>
     
-    <td class="col-md-2">03:40</td>
+    <td class="col-md-2">03:00</td>
     <td class="col-md-3">Finish</td>
     <td class="col-md-7"></td>
   </tr>
@@ -486,7 +503,7 @@
 	/
 	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
 	/
-	<a href="mailto:kkrizka@gmail.com">Contact</a>
+	<a href="mailto:eresseguie@gmail.com">Contact</a>
     </div>
   </div>
   <div class="row">

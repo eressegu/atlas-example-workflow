@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-06 06:55:35 -0700">
+    <meta http-equiv="last-modified" content="2021-10-07 06:26:28 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -46,7 +46,7 @@
     <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="./assets/favicons/swc/favicon-128.png" sizes="128x128" />
-    <meta name="application-name" content="Software Carpentry - ATLAS CMake"/>
+    <meta name="application-name" content="Software Carpentry - ATLAS Example Workflow"/>
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="./assets/favicons/swc/mstile-144x144.png" />
     <meta name="msapplication-square70x70logo" content="./assets/favicons/swc/mstile-70x70.png" />
@@ -63,7 +63,7 @@
 	<![endif]-->
 
   <title>
-  ATLAS CMake
+  ATLAS Example Workflow
   </title>  
 
   </head>
@@ -126,19 +126,19 @@
           <a href="./" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
           <ul class="dropdown-menu">
             
-            <li><a href="./01-introduction/index.html">Introduction to ATLAS Offline Software</a></li>
+            <li><a href="./01-introduction/index.html">Introduction to ATLAS workflow</a></li>
             
-            <li><a href="./02-workspace/index.html">Your Workspace</a></li>
+            <li><a href="./02-submodule/index.html">Adding object kinematic selection modules</a></li>
             
-            <li><a href="./03-toplevelcmake/index.html">The Top-Level CMakeLists.txt</a></li>
+            <li><a href="./03-analyisorganization/index.html">Understanding the analysis organization</a></li>
             
-            <li><a href="./04-packagecmake/index.html">The Package CMakeLists.txt</a></li>
+            <li><a href="./04-integratingsubmodules/index.html">Integrating submodules</a></li>
             
             <li><a href="./05-coffee/index.html">Coffee break!</a></li>
             
-            <li><a href="./06-addcalibration/index.html">Calibrate Your Jets</a></li>
+            <li><a href="./06-analysisselection/index.html">Analysis selection</a></li>
             
-            <li><a href="./07-modifyingathena/index.html">Modyfing an Athena Package</a></li>
+            <li><a href="./07-cutflow/index.html">Cutflow</a></li>
             
 	    <li role="separator" class="divider"></li>
             <li><a href="./aio/index.html">All in one page (Beta)</a></li>
@@ -194,7 +194,7 @@
 
 
 
-<h1 class="maintitle"><a href="./index.html">ATLAS CMake</a></h1>
+<h1 class="maintitle"><a href="./index.html">ATLAS Example Workflow</a></h1>
 
 <article>
 
@@ -217,31 +217,15 @@
   
     <tr>
       <td class="col-md-3">
-        <a href="./01-introduction/index.html">Introduction to ATLAS Offline Software</a>
+        <a href="./01-introduction/index.html">Introduction to ATLAS workflow</a>
       </td>
       <td class="col-md-9">
         <ul>
         
-        <li><p>Athena is a collection of common packages that are compiled and released regulariy.</p>
+        <li><p>You set up a framework to be able to read objects from a DAOD</p>
 </li>
         
-        <li><p>Your analysis project is just an external package.</p>
-</li>
-        
-        </ul>
-      </td>
-    </tr>
-  
-
-  
-    <tr>
-      <td class="col-md-3">
-        <a href="./02-workspace/index.html">Your Workspace</a>
-      </td>
-      <td class="col-md-9">
-        <ul>
-        
-        <li><p>Use three directories: <code class="language-plaintext highlighter-rouge">source/</code> for code, <code class="language-plaintext highlighter-rouge">build/</code> for binaries and <code class="language-plaintext highlighter-rouge">run/</code> for output.</p>
+        <li><p>You make requirements on the objects based on the physics of the process</p>
 </li>
         
         </ul>
@@ -252,12 +236,12 @@
   
     <tr>
       <td class="col-md-3">
-        <a href="./03-toplevelcmake/index.html">The Top-Level CMakeLists.txt</a>
+        <a href="./02-submodule/index.html">Adding object kinematic selection modules</a>
       </td>
       <td class="col-md-9">
         <ul>
         
-        <li><p>Copy-paste the generic <code class="language-plaintext highlighter-rouge">CMakeLists.txt</code> from the ATLAS Software Documentation and place it inside the <code class="language-plaintext highlighter-rouge">source/</code> directory.</p>
+        <li><p>We can add more than one submodule</p>
 </li>
         
         </ul>
@@ -268,12 +252,34 @@
   
     <tr>
       <td class="col-md-3">
-        <a href="./04-packagecmake/index.html">The Package CMakeLists.txt</a>
+        <a href="./03-analyisorganization/index.html">Understanding the analysis organization</a>
       </td>
       <td class="col-md-9">
         <ul>
         
-        <li><p>Use ATLAS macros. They specify a structure to your <code class="language-plaintext highlighter-rouge">build/</code> directory that makes your life easy!</p>
+        <li><p>When you write an analysis framework, you want to split your code into different libraries</p>
+</li>
+        
+        <li><p>You can integrate different libraries to aid in object selection.</p>
+</li>
+        
+        </ul>
+      </td>
+    </tr>
+  
+
+  
+    <tr>
+      <td class="col-md-3">
+        <a href="./04-integratingsubmodules/index.html">Integrating submodules</a>
+      </td>
+      <td class="col-md-9">
+        <ul>
+        
+        <li><p>When we add a new submodule, we need to update cmake.</p>
+</li>
+        
+        <li><p>Running over xAODs/DAODs is not that scary</p>
 </li>
         
         </ul>
@@ -300,12 +306,12 @@
   
     <tr>
       <td class="col-md-3">
-        <a href="./06-addcalibration/index.html">Calibrate Your Jets</a>
+        <a href="./06-analysisselection/index.html">Analysis selection</a>
       </td>
       <td class="col-md-9">
         <ul>
         
-        <li><p>There are nice official tools to apply calibrations.</p>
+        <li><p>You can apply a selection on objects to help look for a signal</p>
 </li>
         
         </ul>
@@ -316,12 +322,12 @@
   
     <tr>
       <td class="col-md-3">
-        <a href="./07-modifyingathena/index.html">Modyfing an Athena Package</a>
+        <a href="./07-cutflow/index.html">Cutflow</a>
       </td>
       <td class="col-md-9">
         <ul>
         
-        <li><p>Don’t compile the entire athena repository. Use either sparse checkouts or <code class="language-plaintext highlighter-rouge">package_filters.txt</code> to specify what packages you want to compile.</p>
+        <li><p>I can see the impact of my selection by making a cutflow</p>
 </li>
         
         </ul>
@@ -369,7 +375,7 @@
 	/
 	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
 	/
-	<a href="mailto:kkrizka@gmail.com">Contact</a>
+	<a href="mailto:eresseguie@gmail.com">Contact</a>
     </div>
   </div>
   <div class="row">

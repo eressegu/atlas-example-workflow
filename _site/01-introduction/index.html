@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-06 06:55:35 -0700">
+    <meta http-equiv="last-modified" content="2021-10-07 06:26:28 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -46,7 +46,7 @@
     <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-128.png" sizes="128x128" />
-    <meta name="application-name" content="Software Carpentry - ATLAS CMake"/>
+    <meta name="application-name" content="Software Carpentry - ATLAS Example Workflow"/>
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="../assets/favicons/swc/mstile-144x144.png" />
     <meta name="msapplication-square70x70logo" content="../assets/favicons/swc/mstile-70x70.png" />
@@ -63,7 +63,7 @@
 	<![endif]-->
 
   <title>
-  Introduction to ATLAS Offline Software &ndash; ATLAS CMake
+  Introduction to ATLAS workflow &ndash; ATLAS Example Workflow
   </title>  
 
   </head>
@@ -126,19 +126,19 @@
           <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
           <ul class="dropdown-menu">
             
-            <li><a href="../01-introduction/index.html">Introduction to ATLAS Offline Software</a></li>
+            <li><a href="../01-introduction/index.html">Introduction to ATLAS workflow</a></li>
             
-            <li><a href="../02-workspace/index.html">Your Workspace</a></li>
+            <li><a href="../02-submodule/index.html">Adding object kinematic selection modules</a></li>
             
-            <li><a href="../03-toplevelcmake/index.html">The Top-Level CMakeLists.txt</a></li>
+            <li><a href="../03-analyisorganization/index.html">Understanding the analysis organization</a></li>
             
-            <li><a href="../04-packagecmake/index.html">The Package CMakeLists.txt</a></li>
+            <li><a href="../04-integratingsubmodules/index.html">Integrating submodules</a></li>
             
             <li><a href="../05-coffee/index.html">Coffee break!</a></li>
             
-            <li><a href="../06-addcalibration/index.html">Calibrate Your Jets</a></li>
+            <li><a href="../06-analysisselection/index.html">Analysis selection</a></li>
             
-            <li><a href="../07-modifyingathena/index.html">Modyfing an Athena Package</a></li>
+            <li><a href="../07-cutflow/index.html">Cutflow</a></li>
             
 	    <li role="separator" class="divider"></li>
             <li><a href="../aio/index.html">All in one page (Beta)</a></li>
@@ -206,13 +206,13 @@
   </div>
   <div class="col-xs-10">
     
-    <h3 class="maintitle"><a href="../">ATLAS CMake</a></h3>
+    <h3 class="maintitle"><a href="../">ATLAS Example Workflow</a></h3>
     
   </div>
   <div class="col-xs-1">
     <h3 class="text-right">
       
-      <a href="../02-workspace/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      <a href="../02-submodule/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
       
     </h3>
   </div>
@@ -223,7 +223,7 @@
   <div class="col-md-1">
   </div>
   <div class="col-md-10">
-    <h1 class="maintitle">Introduction to ATLAS Offline Software</h1>
+    <h1 class="maintitle">Introduction to ATLAS workflow</h1>
   </div>
   <div class="col-md-1">
   </div>
@@ -243,7 +243,10 @@
       <strong>Questions</strong>
       <ul>
 	
-	<li><p>What is atlas/athena and what release should I be using?</p>
+	<li><p>What process are we looking at?</p>
+</li>
+	
+	<li><p>What is the workflow used for?</p>
 </li>
 	
       </ul>
@@ -257,16 +260,10 @@
       <strong>Objectives</strong>
       <ul>
 	
-	<li><p>Introduce the athena repository.</p>
+	<li><p>Understand how ATLAS data is simulated and reconstructed</p>
 </li>
 	
-	<li><p>Define the concept of a <em>package</em>.</p>
-</li>
-	
-	<li><p>Define the contect of a <em>project</em>.</p>
-</li>
-	
-	<li><p>Describe what a release means.</p>
+	<li><p>Understand analysis workflow.</p>
 </li>
 	
       </ul>
@@ -275,104 +272,49 @@
 
 </blockquote>
 
-<p>In this episodes, we hope to introduce the organization of the ATLAS software (athena).</p>
+<p>In this episodes, we hope to introduce you to a basic analysis workflow.</p>
 
-<h1 id="what-is-athena">What is Athena?</h1>
-<p>All of the central ATLAS software is stored in a public repository called <a href="https://gitlab.cern.ch/atlas/athena">Athena</a>. It contains all of the code used for simulation, data reconstruction, triggering, calibration and object identification.</p>
+<h1 id="atlas-data-formats">ATLAS data formats</h1>
 
-<p>This lesson will not touch any of this source code in detail. How to develop new Athena software is covered in the <a href="https://atlassoftwaredocs.web.cern.ch/athena/">official ATLAS documentation</a>. Instead we will focus on <em>using</em> the pre-compiled versions of a few athena packages.</p>
+<p><img src="./../fig/DataFormatsWorkflow.jpeg" alt="image info" /></p>
 
-<h1 id="athena-packages">Athena Packages</h1>
-<p>The Athena repository contains several packages. A single package is a collection of related libraries, programs and other supporting files that are maintained by a dedicated group of developers. For example, the <code class="language-plaintext highlighter-rouge">Reconstruction/Jet/JetCalibTools/JetCalibTools</code> package contains all of the code necessary to calibrate jets.</p>
+<p>When you do an analysis, you need both recontructed data and Monte Carlo (samples). There are many steps in producing these samples and many data formats along the way.</p>
 
-<p>Each package, for example <code class="language-plaintext highlighter-rouge">Package</code>, is a directory with the following structure:</p>
+<p>For MC, the events are first generated using an event generator, such as MadGraph, for example. The events are then processed through a detector simulation software and they are digitized, such that the output of this digitization ressembles events coming from the detector.</p>
+
+<p>Detector specific reconstruction are run on the digitized events to reconstruct traacks and group clusters of energy. From these, objecst such as electrons, muons, and jets are built. For reconstruuction, the <code class="language-plaintext highlighter-rouge">Athena</code> frarmework that we previously introduced is used.</p>
+
+<p>At each step of the process, new data formats are created that are decreasing size and level of detail. This inforrmation is directly taken from the <a href="https://twiki.cern.ch/twiki/bin/view/AtlasProtected/PhysicsAnalysisWorkBookRel20DataFormats">ATLAS data formats twiki</a>:</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">Package/</code>: All of the header files, where <code class="language-plaintext highlighter-rouge">Package</code> is replaced with the package’s name</li>
-  <li><code class="language-plaintext highlighter-rouge">Root/</code>: All of the source code of the library</li>
-  <li><code class="language-plaintext highlighter-rouge">util/</code>: Any executables that are part of the package</li>
-  <li><code class="language-plaintext highlighter-rouge">share/</code>: Supporting files (ie: example settings, small calibration files)</li>
-  <li><code class="language-plaintext highlighter-rouge">CMakeLists.txt</code>: The file that tells cmake how this package is organized.</li>
+  <li>Byte-stream: Data which is a persistent presentation of the event data flowing from the trigger system (data only).</li>
+  <li>EVNT: MC generator output in HepMC (MC only).</li>
+  <li>HITS: MC energy deposition in detector from Geant4 (MC only).</li>
+  <li>RDO (Raw Data Object) which is a C++ object representation of the byte-stream information.</li>
+  <li>xAOD (Analysis Object Data):  a summary of the reconstructed event, and contains sufficient information for common analyses (tracks, jets, taus, etc.), accessible in using Athena or Standalone ROOT</li>
+  <li>DxAOD: derived xAODs with refined content and event selections, specific to physics and performance groups</li>
 </ul>
 
-<p>The structure itself is very flexible. Technically, only the <code class="language-plaintext highlighter-rouge">CMakeLists.txt</code> file is required to be there. However maintaining consistency across the experiment is very important for code readability.</p>
+<p>The DxAODs are much smaller than xAOD and they only contain variables and events of interest to a particular analysis or group of analyses. The naming convention and infomation about the various DxAODs can be found in the <a href="https://twiki.cern.ch/twiki/bin/view/AtlasProtected/PhysicsAnalysisWorkBookRel20DxAODs">Derived xAOD twiki</a>.</p>
 
-<p>You can also have packages outside of the athena repository. For example, you can think of your analysis code as an external package.</p>
+<h1 id="what-process-have-you-been-working-on">What process have you been working on?</h1>
+<p>The MC sample is an Exotic7 DxAOD of a <em>ZH</em> sample. In this sample, the Z decays leptonically, and the Higgs boson decays to 2 b-quarks. This is illustrated in the Feynman diagram:</p>
 
-<h1 id="projects-and-releases">Projects and Releases</h1>
-<p>The entire athena repository is huge and has many dependencies between its packages. New code is being added all the time. To keep everything stable, there is a complex release procedure for “public” code.</p>
+<p><img src="./../fig/vhbb.jpg" alt="image info" /></p>
 
-<p>First of all, there is the concept of an athena project. An athena project is a collection of packages required to accomplish a certain task. For example, if you only care to analyze events, then you don’t need all of the infrastrucure used during detector operation. Reducing the package list to only what is required has several advantages:</p>
+<h1 id="analysis-workflow">Analysis workflow</h1>
+<p>The purpose of an analysis workflow is to define the objects and the selection to optimize for a particular signal.</p>
+
+<p>Since our sample is ZH, the objects in our events are:</p>
 <ul>
-  <li>Reduce the size of the compiled release. This is useful if you want to create a container that can run on your laptop.</li>
-  <li>Allow for different release and validation cycles. Packages used for operation need to be stable and require lot of validation. Packages related to calibration can be updated quite often with latest and greatest features.</li>
+  <li>2 jets that are b-tagged</li>
+  <li>2 leptons that are opposite charge since the Z boson is neutral</li>
 </ul>
 
-<p>The following list of projects has been taken from the <a href="https://atlassoftwaredocs.web.cern.ch/athena/athena-intro/">ATLAS Software Documentation</a>.</p>
+<p>We also want to define event level kinematics that can help us identify our process, i.e. the invariant mass of the two jets can be used to determine if the jets came from a higgs decay.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Project</th>
-      <th>Purpose</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Athena</td>
-      <td>Functional for event generation, simulation, digitisation reconstruction and DAOD derivations (but rarely validated for anything except digi+reco)</td>
-    </tr>
-    <tr>
-      <td>AthenaP1</td>
-      <td>Used to run the High Level Trigger and online monitoring at P1</td>
-    </tr>
-    <tr>
-      <td>AthGeneration</td>
-      <td>For event generation</td>
-    </tr>
-    <tr>
-      <td>AthSimulation</td>
-      <td>For full Geant4 simulation</td>
-    </tr>
-    <tr>
-      <td>AthDerivation</td>
-      <td>For generating derived AODs from AOD and Athena based analysis</td>
-    </tr>
-    <tr>
-      <td>AthAnalysisBase</td>
-      <td>Athena based analysis</td>
-    </tr>
-    <tr>
-      <td>AnalysisBase</td>
-      <td>Non-athena ROOT based analysis</td>
-    </tr>
-  </tbody>
-</table>
+<p>Finally, we want to define our analysis selection. This applies all the object and event requirements on the event to help select ZH events from background.</p>
 
-<p>Each project is released independently and versioned using the following scheme: <code class="language-plaintext highlighter-rouge">A.B.X[.Y]</code>, where</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">A</code>: The <em>release series</em>. For example, release 21 is what you’ll be using for all Run 2 data.</li>
-  <li><code class="language-plaintext highlighter-rouge">B</code>: The <em>release flavour</em>. Each flavour targets a different goal. For example, rlavour 2 is used for analysis while upgrade studies happen in flavour 9. Keeping code synchronized between flavours is very complicated and we don’t suggest using the ATLAS scheme for this.</li>
-  <li><code class="language-plaintext highlighter-rouge">X</code>: The <em>major release</em> number. Automatically incremented when there is a new release for public consumption.</li>
-  <li><code class="language-plaintext highlighter-rouge">Y</code>: Optional <em>minor release</em>. In case a small bug fix is necessary for a major release.</li>
-</ul>
-
-<p>The official releases are compiled and copied to CVMFS. For certail projects, Docker images are also prepared (more on this tomorrow!).</p>
-
-<blockquote class="challenge">
-  <h2 id="our-projectrelease">Our Project,Release</h2>
-
-  <p>Our goal is to analyze data using a very lightweight framework. What project and release will we be using? (Hint: It is in the form of <code class="language-plaintext highlighter-rouge">Project,A.B.125</code>).</p>
-
-  <blockquote class="solution">
-    <h2 id="solution">Solution</h2>
-
-    <p>We will be using <code class="language-plaintext highlighter-rouge">AnalysisBase,21.2.125</code>. We need the <code class="language-plaintext highlighter-rouge">AnalysisBase</code> project to get the basic tools without the full environment and release <code class="language-plaintext highlighter-rouge">21.2</code> is designed for analyzing Run 2 data. The minor release, <code class="language-plaintext highlighter-rouge">125</code>, was the latest one available at the time of writing.</p>
-  </blockquote>
-</blockquote>
-
-<h1 id="contribution-to-athena">Contribution to Athena</h1>
-<p>You might be asked to improve or fix a package inside the athena repository during your career in ATLAS. The procedure for doing so is very straightforward, if you are paying attention this week. It uses a lot of the git workflow (yesterday) and CI validation (tomorrow) that we are covering. However we will not go into details of submitting a merge request to <code class="language-plaintext highlighter-rouge">atlas/athena</code>. It is very nicely documented in the <a href="https://atlassoftwaredocs.web.cern.ch/gittutorial/">ATLAS Software Documentation</a>.</p>
+<p>In today’s module, we will go over these steps in more detail.</p>
 
 
 
@@ -380,10 +322,10 @@
   <h2>Key Points</h2>
   <ul>
     
-    <li><p>Athena is a collection of common packages that are compiled and released regulariy.</p>
+    <li><p>You set up a framework to be able to read objects from a DAOD</p>
 </li>
     
-    <li><p>Your analysis project is just an external package.</p>
+    <li><p>You make requirements on the objects based on the physics of the process</p>
 </li>
     
   </ul>
@@ -420,7 +362,7 @@
   <div class="col-xs-1">
     <h3 class="text-right">
       
-      <a href="../02-workspace/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      <a href="../02-submodule/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
       
     </h3>
   </div>
@@ -457,7 +399,7 @@
 	/
 	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
 	/
-	<a href="mailto:kkrizka@gmail.com">Contact</a>
+	<a href="mailto:eresseguie@gmail.com">Contact</a>
     </div>
   </div>
   <div class="row">

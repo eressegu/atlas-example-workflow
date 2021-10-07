@@ -8,11 +8,10 @@ The ATLAS software, called *athena*, itself is a very large project containing m
 
 > ## Prerequisites
 >
-> This assumes that you'll have a basic knowledge of CMake, for example:
+> This assumes that you'll have a basic knowledge of git, cmake, for example:
 >
-> 1. What out-of-source builds are
-> 2. How to write a simple `CMakeList.txt`
-> 3. How to generate a `Makefile` from a `CMakeLists.txt`
+> 1. How to add git submodules
+> 2. How to generate a `Makefile` from a `CMakeLists.txt`
 >
 > This lesson will also build on the `AnalysisPayload` project started in the previous ATLAS GitLab lesson.
 {: .prereq}

@@ -19,7 +19,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-06 06:55:35 -0700">
+    <meta http-equiv="last-modified" content="2021-10-07 06:26:28 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -46,7 +46,7 @@
     <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-16x16.png" sizes="16x16" />
     <link rel="icon" type="image/png" href="../assets/favicons/swc/favicon-128.png" sizes="128x128" />
-    <meta name="application-name" content="Software Carpentry - ATLAS CMake"/>
+    <meta name="application-name" content="Software Carpentry - ATLAS Example Workflow"/>
     <meta name="msapplication-TileColor" content="#FFFFFF" />
     <meta name="msapplication-TileImage" content="../assets/favicons/swc/mstile-144x144.png" />
     <meta name="msapplication-square70x70logo" content="../assets/favicons/swc/mstile-70x70.png" />
@@ -63,7 +63,7 @@
 	<![endif]-->
 
   <title>
-  Modyfing an Athena Package &ndash; ATLAS CMake
+  Cutflow &ndash; ATLAS Example Workflow
   </title>  
 
   </head>
@@ -126,19 +126,19 @@
           <a href="../" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
           <ul class="dropdown-menu">
             
-            <li><a href="../01-introduction/index.html">Introduction to ATLAS Offline Software</a></li>
+            <li><a href="../01-introduction/index.html">Introduction to ATLAS workflow</a></li>
             
-            <li><a href="../02-workspace/index.html">Your Workspace</a></li>
+            <li><a href="../02-submodule/index.html">Adding object kinematic selection modules</a></li>
             
-            <li><a href="../03-toplevelcmake/index.html">The Top-Level CMakeLists.txt</a></li>
+            <li><a href="../03-analyisorganization/index.html">Understanding the analysis organization</a></li>
             
-            <li><a href="../04-packagecmake/index.html">The Package CMakeLists.txt</a></li>
+            <li><a href="../04-integratingsubmodules/index.html">Integrating submodules</a></li>
             
             <li><a href="../05-coffee/index.html">Coffee break!</a></li>
             
-            <li><a href="../06-addcalibration/index.html">Calibrate Your Jets</a></li>
+            <li><a href="../06-analysisselection/index.html">Analysis selection</a></li>
             
-            <li><a href="../07-modifyingathena/index.html">Modyfing an Athena Package</a></li>
+            <li><a href="../07-cutflow/index.html">Cutflow</a></li>
             
 	    <li role="separator" class="divider"></li>
             <li><a href="../aio/index.html">All in one page (Beta)</a></li>
@@ -168,7 +168,7 @@
 	
         <li><a href="../LICENSE.html">License</a></li>
 	
-	<li><a href="/edit//_episodes/07-modifyingathena.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	<li><a href="/edit//_episodes/07-cutflow.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
 	
       </ul>
       <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
@@ -200,13 +200,13 @@
   <div class="col-xs-1">
     <h3 class="text-left">
       
-      <a href="../06-addcalibration/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      <a href="../06-analysisselection/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
       
     </h3>
   </div>
   <div class="col-xs-10">
     
-    <h3 class="maintitle"><a href="../">ATLAS CMake</a></h3>
+    <h3 class="maintitle"><a href="../">ATLAS Example Workflow</a></h3>
     
   </div>
   <div class="col-xs-1">
@@ -223,7 +223,7 @@
   <div class="col-md-1">
   </div>
   <div class="col-md-10">
-    <h1 class="maintitle">Modyfing an Athena Package</h1>
+    <h1 class="maintitle">Cutflow</h1>
   </div>
   <div class="col-md-1">
   </div>
@@ -235,7 +235,7 @@
 
   <div class="row">
     <div class="col-md-3">
-      <strong>Teaching:</strong> 20 min
+      <strong>Teaching:</strong> 10 min
       <br/>
       <strong>Exercises:</strong> 20 min
     </div>
@@ -243,7 +243,7 @@
       <strong>Questions</strong>
       <ul>
 	
-	<li><p>How do I modify a package inside the athena repository?</p>
+	<li><p>How do I use all my variables to construct an analysis?</p>
 </li>
 	
       </ul>
@@ -257,10 +257,7 @@
       <strong>Objectives</strong>
       <ul>
 	
-	<li><p>Learn about sparse git checkouts.</p>
-</li>
-	
-	<li><p>Learn about <code class="language-plaintext highlighter-rouge">package_filters.txt</code>.</p>
+	<li><p>Understand the purpose of a cutflow and how to write one</p>
 </li>
 	
       </ul>
@@ -269,74 +266,81 @@
 
 </blockquote>
 
-<p>In this section, we will learn how to modify a package in the athena repository. Part of making changes is compiling them for testing.</p>
+<h1 id="developing-an-analysis">Developing an analysis</h1>
 
-<p>Start by pointing your web browser to the <a href="https://gitlab.cern.ch/atlas/athena">official; athena repository</a> and making a fork. As we learned yesterday, you should always make a fork if you want to modify other people’s code. One you made your fork, made a clone of it. The last line tells git to checkout the <code class="language-plaintext highlighter-rouge">21.2</code> branch. This is the base for the release that we are working with.</p>
+<p>We have learned how to select Z bosons and also Higgs bosons, now we want to develop an analysis. The way we can do this is by placing requirements on the event. You have already done when you calculated the invariant mass of the two jets, and the invariant mass of the leptons.</p>
 
-<div class="language-bash source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from source/ directory</span>
-git clone ssh://git@gitlab.cern.ch:7999/<span class="k">${</span><span class="nv">USER</span><span class="k">}</span>/athena.git
-<span class="nb">cd </span>athena
-git checkout 21.2
-</code></pre></div></div>
+<p>To calculate the invariant mass of the jets, you required at least 2 good calibrated jets. To calculate the invariant mass of the leptons, you required exactl 2 good electrons (or muons) that are opposite charge.</p>
 
-<p>Do not try to compile your project now. The athena repository contains many packages. Compiling it will take forever. Instead we will look at two ways to copmile only specific packages:</p>
+<p>By applying all these selections, you are in fact writing an analysis to select ZH events.</p>
+
+<h1 id="writing-a-cutflow">Writing a cutflow</h1>
+
+<p>A cutflow is a way to visualize the impact of the selection by sequentially applying each requirement. This allows to see the efficiency of each requirement in our event.</p>
+
+<p>Based on our above selection, we will write a cutflow.</p>
+
+<p>First, let’s create a cutflow histogram</p>
+<pre class="source"><code class="language-code">TH1D *h_cutflow =  new TH1D("h_cutflow", "", 7, 0, 7);
+</code></pre>
+
+<p>Each bin in the cutflow will represent a requirement we apply. We will therefore fill each bin with events that pass a certain requirement.</p>
+
+<p>Right before we close the event loop, right after the counter for the number of events, let’s add our cutflow.</p>
+
+<p>We’ll first start by filling the first bin in our histogram with all events so we know how many events we started with.</p>
+
+<pre class="source"><code class="language-code">h_cutflow-&gt;Fill(0);
+</code></pre>
+
+<p>Since we applied no requirements, this will count all events.</p>
+
+<p>We will now apply each requirement in order and only keep events that satisfy each requirement. Let’s first require at least 2 good calibrated jets. After you veto events that fail the requirement, you will fill the next bin in the cutflow histogram.</p>
+
+<pre class="source"><code class="language-code">if ( !(jets_kin_cal.size()&gt;=2) ) continue;
+h_cutflow-&gt;Fill(1);
+</code></pre>
+
+<p>Now, the remaining requirements are as follows:</p>
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">package_filters.txt</code>, which is an ATLAS CMake addition to take a list of packages you want to compile,</li>
-  <li>sparce checkouts, which is a git feature to only checkout specific files.</li>
+  <li>at least 2 b-tagged jets</li>
+  <li>exactly 2 electrons</li>
+  <li>|mjj - 125| &lt; 25  because the invariant mass of the dijet system should be close to the Higgs mass</li>
+  <li>|mll - 90| &lt; 10 because of the invariant mass of the two leptons should be close to the Z mass</li>
 </ul>
 
-<h1 id="the-package_filterstxt-method">The <code class="language-plaintext highlighter-rouge">package_filters.txt</code> Method</h1>
+<blockquote class="solution">
+  <h2 id="solution">Solution</h2>
 
-<p>The <code class="language-plaintext highlighter-rouge">ATLAS_PROJECT</code> command, that finds all of your packages, can be tune by the use of a <code class="language-plaintext highlighter-rouge">package_filters.txt</code> file. This file can contain specific instructions for what packages to ignore and which ones to compile. Create a <code class="language-plaintext highlighter-rouge">sources/package_filters.txt</code> file with the following contents.</p>
+  <p>Your remaining cutflow should look like this.</p>
 
-<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+ athena/Reconstruction/Jet/JetCalibTools
-- athena/.*
-+ .*
-</code></pre></div></div>
+  <pre class="source"><code class="language-code">if ( !(n_bjet &gt;= 2) ) continue;
+h_cutflow-&gt;Fill(2);
 
-<p>Then clone your fork into the <code class="language-plaintext highlighter-rouge">source/</code> directory. Make sure to change <code class="language-plaintext highlighter-rouge">kkrizka</code> to your lxplus username.</p>
+if ( !(electrons_kin.size() == 2 &amp;&amp; electrons_kin.at(0).charge() !=  electrons_kin.at(1).charge()) ) continue;
+h_cutflow-&gt;Fill(3);
 
-<p>The first column is whether to compile a package (<code class="language-plaintext highlighter-rouge">+</code>) or to ignore it (<code class="language-plaintext highlighter-rouge">-</code>). You can use regular expressions to select multiple packages. In this example, the first line says we want to compile <code class="language-plaintext highlighter-rouge">JetCalibTools</code> package, the second line says ignore all athena packages not already listed and the third line says compile all other packages.</p>
+if ( !(abs((jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. - 125.) &lt; 25) ) continue;
+h_cutflow-&gt;Fill(4);
 
-<p>Now you need to re-run CMake, telling it explicitely where your package filter file is located.</p>
+if ( !(abs((electrons_kin.at(0).p4()+electrons_kin.at(1).p4()).M()/1000. - 90.) &lt; 10) )continue;
+h_cutflow-&gt;Fill(5);
+</code></pre>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from build/ directory</span>
-cmake <span class="nt">-DATLAS_PACKAGE_FILTER_FILE</span><span class="o">=</span>../source/package_filters.txt ../source
-</code></pre></div></div>
+</blockquote>
 
-<p>Now run <code class="language-plaintext highlighter-rouge">make</code>. It should finish quickly!</p>
+<p>Write your histogram to the file then you can compile and run the code.</p>
 
-<h1 id="the-sparse-checkout-method">The Sparse Checkout Method</h1>
-<p>The sparse checkout is a git feature that allows you to only “checkout” files that you want to the file system. In our case, we will only checkout the <code class="language-plaintext highlighter-rouge">JetCalibTools</code> package. As you will see, it is a more hidden feature of git and requires some manual work.</p>
+<p><img src="./../fig/cutflow.jpg" alt="image info" /></p>
 
-<p>The first step is to enable sparse checkout functionality inside your athena clone.</p>
+<p>Most of the inefficiency comes from requiring 2 b-tagged jets.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from source/athena directory</span>
-git config core.sparsecheckout <span class="nb">true</span>
-</code></pre></div></div>
+<blockquote class="challenge">
+  <h2 id="other-selections">Other selections</h2>
 
-<p>Then define the list of directories or files that you want to be explicitely checked out. This list is stored inside the <code class="language-plaintext highlighter-rouge">.git/info/sparse-checkout</code> file. The <code class="language-plaintext highlighter-rouge">.git/</code> folder is inside the root of your git repository and contains all of your settings and repository history.</p>
+  <p>Modify the number of b-jets and see the impact on the cutflow. You can also feel free to different diffferent requirements.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from source/athena directory</span>
-<span class="nb">echo </span>Reconstruction/Jet/JetCalibTools/ <span class="o">&gt;</span> .git/info/sparse-checkout
-</code></pre></div></div>
-
-<p>Finally tell git to redo the checkout of your branch. You should now only have the <code class="language-plaintext highlighter-rouge">Reconstruction/Jet/JetCalibTools/</code> package leftover.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from source/athena directory</span>
-git checkout 21.2
-<span class="nb">ls</span>
-</code></pre></div></div>
-
-<div class="language-plaintext output highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reconstruction
-</code></pre></div></div>
-
-<p>Finally you need to re-run CMake to register the new package and compile using make.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run from build/ directory</span>
-cmake ../source
-make
-</code></pre></div></div>
+</blockquote>
 
 
 
@@ -344,7 +348,7 @@ make
   <h2>Key Points</h2>
   <ul>
     
-    <li><p>Don’t compile the entire athena repository. Use either sparse checkouts or <code class="language-plaintext highlighter-rouge">package_filters.txt</code> to specify what packages you want to compile.</p>
+    <li><p>I can see the impact of my selection by making a cutflow</p>
 </li>
     
   </ul>
@@ -371,7 +375,7 @@ make
   <div class="col-xs-1">
     <h3 class="text-left">
       
-      <a href="../06-addcalibration/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      <a href="../06-analysisselection/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
       
     </h3>
   </div>
@@ -409,7 +413,7 @@ make
     </div>
     <div class="col-md-6 help-links" align="right">
 	
-	<a href="/edit//_episodes/07-modifyingathena.md" data-checker-ignore>Edit on GitHub</a>
+	<a href="/edit//_episodes/07-cutflow.md" data-checker-ignore>Edit on GitHub</a>
 	
 	/
 	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
@@ -418,7 +422,7 @@ make
 	/
 	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
 	/
-	<a href="mailto:kkrizka@gmail.com">Contact</a>
+	<a href="mailto:eresseguie@gmail.com">Contact</a>
     </div>
   </div>
   <div class="row">
