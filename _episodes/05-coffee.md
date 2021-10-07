@@ -11,7 +11,7 @@ objectives:
 - "Eat cookies."
 - "Talk to people (Cafeteria room!)."
 keypoints:
-- "Coffee sucks, drink tea."
+- "Live life today like there is no coffee tomorrow. - The Little book of Hygge"
 ---
 
 <center>
