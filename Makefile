@@ -1,46 +1,5 @@
-## ========================================
-## Commands for both workshop and lesson websites.
 
-# Settings
-MAKEFILES=Makefile $(wildcard *.mk)
-JEKYLL=jekyll
-JEKYLL_VERSION=3.8.5
-PARSER=bin/markdown_ast.rb
-DST=_site
-
-# Controls
-.PHONY : commands clean files
-.NOTPARALLEL:
-all : commands
-
-## commands         : show all commands.
-commands :
-	@grep -h -E '^##' ${MAKEFILES} | sed -e 's/## //g'
-
-## docker-serve     : use docker to build the site
-docker-serve :
-	docker run --rm -it -v ${PWD}:/srv/jekyll -p 127.0.0.1:4000:4000 jekyll/jekyll:${JEKYLL_VERSION} make serve
-
-## serve            : run a local server.
-serve : lesson-md
-	${JEKYLL} serve
-
-## site             : build files but do not run a server.
-site : lesson-md
-	${JEKYLL} build
-
-# repo-check        : check repository settings.
-repo-check :
-	@bin/repo_check.py -s .
-
-## clean            : clean up junk files.
-clean :
-	@rm -rf ${DST}
-	@rm -rf .sass-cache
-	@rm -rf bin/__pycache__
-	@find . -name .DS_Store -exec rm {} \;
-	@find . -name '*~' -exec rm {} \;
-	@find . -name '*.pyc' -exec rm {} \;
+ -name '*.pyc' -exec rm {} \;
 
 ## clean-rmd        : clean intermediate R files (that need to be committed to the repo).
 clean-rmd :
