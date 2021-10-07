@@ -47,15 +47,15 @@ You can also run your code now if you would like before moving to the next step.
 
 The MC process we are studying does not only have b-jets, it also has leptons. For leptons, we'll only consider electrons and muons.
 
-For the jet selection, we added the git submodule `JetSelectionHelper` in a previous module. We will now add two new submodules for the electron and muon selections: [`ElectronSelectionHelper`](https://gitlab.cern.ch/eressegu/ElectronSelectionHelper.git source/ElectronSelectionHelper) and the [`MuonSelectionHelper`](https://gitlab.cern.ch/eressegu/MuonSelectionHelper.git source/MuonSelectionHelper). We also want to add both of these subomdules to the source folder.
+For the jet selection, we added the git submodule `JetSelectionHelper` in a previous module. We will now add two new submodules for the electron and muon selections: [`ElectronSelectionHelper`](https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/ElectronSelectionHelper) and the [`MuonSelectionHelper`](https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/MuonSelectionHelper). We also want to add both of these subomdules to the source folder.
 
 > ## Solution
 >
 > The commands to add the submodules are the following.
 >
 > ~~~shell
-> git submodule add https://gitlab.cern.ch/eressegu/MuonSelectionHelper.git source/MuonSelectionHelper
-> git submodule add https://gitlab.cern.ch/eressegu/ElectronSelectionHelper.git source/ElectronSelectionHelper
+> git submodule add https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/MuonSelectionHelper.git source/MuonSelectionHelper
+> git submodule add https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/ElectronSelectionHelper.git source/ElectronSelectionHelper
 > ~~~
 > {: .source}
 >

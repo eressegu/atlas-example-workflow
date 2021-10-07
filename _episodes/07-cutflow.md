@@ -90,7 +90,7 @@ Most of the inefficiency comes from requiring 2 b-tagged jets.
 >
 {: .challenge}
 
-This completes today's module. For the full code from this module, please refer to the [ATLAS Example Workflow](https://gitlab.cern.ch/eressegu/atlas-example-workflow) repositoryy.
+This completes today's module. For the full code from this module, please refer to the [ATLAS Example Workflow](https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/v8-example-workflow) repository.
 
 {% include links.md %}
 
