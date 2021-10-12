@@ -114,16 +114,10 @@ xAOD::Init();
  ~~~
  {: .source}
  
- Object containers need to be retrieved from the event store. We create null pointer and fill all `AntiKt4EMTopoJets` into our `JetContainer`.  
+ Object containers need to be retrieved from the event store. We create null pointer and fill all `AntiKt4EMPFlowJets_BTagging201810` into our `JetContainer`.  
  ~~~
  const xAOD::JetContainer* jets = nullptr;
- event.retrieve(jets, "AntiKt4EMTopoJets");
-~~~
- {: .source}
- 
- To be able to make use of the b-tagging later, let's change the jet container we retrieve from `AntiKt4EMTopoJets` to `AntiKt4EMTopoJets_BTagging201810`. Your code should now look like this.
- ~~~code
- event.retrieve(jets, "AntiKt4EMTopoJets_BTagging201810");
+ event.retrieve(jets, "AntiKt4EMPFlowJets_BTagging201810");
 ~~~
  {: .source}
  
