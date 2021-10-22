@@ -31,7 +31,7 @@ We have written all the commands we use for the setup. We then call the executab
 
 Instead of specifying the file, we use a variable `{1}`. This will allow us to run over multiple files.
 
-Now, let's write our submit job.
+Now, let's write our submit job called `ap.sub`.
 ~~~bash
 Universe   = vanilla
 Executable            = runAnalysisPayload.sh
@@ -54,3 +54,10 @@ Your `files.txt` file should look like this:
 ~~~
 /work/eresseguie/bootcamp/DAOD_EXOT27.24604725._000001.pool.root.1
 ~~~
+
+Now, you can submit your jobs.
+~~~code
+condor_submit ap.sub
+~~~
+
+If there are no errors, you will see `myOutputFile.root` appear in your `batch` folder.
