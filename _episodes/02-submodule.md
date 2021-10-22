@@ -19,19 +19,6 @@ The new data file is:
 /work/eresseguie/bootcamp/DAOD_EXOT27.24604725._000001.pool.root.1
 ~~~
 
-If you clone, you will need to add some updates from the CI/CD module so let's add them here.
-
-Change `int main()` to:
-~~~
-int main(int argc, char** argv) {
-~~~
-
-and add 
-~~~
-if(argc >= 2) inputFilePath = argv[1];
-~~~
-under the `TString inputFilePath` line.
-
 # Preparing your repository and compiling existing code
 
 Before making modifications, it is always good to compile the exisiting directory to make sure there are no errors.
