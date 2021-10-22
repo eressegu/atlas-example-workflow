@@ -65,7 +65,7 @@ The muons and electrons have similar `SelectionHelper` algorithms but those only
 
 > ## Electron eta requirement
 >
-> Why do we veto electrron eta between 1.37 and 1.52?
+> Why do we veto electron eta between 1.37 and 1.52?
 >
 > > ## Solution
 > >
@@ -101,7 +101,7 @@ We also have the libraries we had added as a submodule: `JetSelectionHelper.h`. 
 
 ## Running over events
 
-We first initialize the EDM as shown in the following code snippet 
+We first initialize the EDM as shown in the following code snippet. You will see the following pieces of code in `AnalysisPayload/util/AnalysisPayload.cxx`.
 
 ~~~
 xAOD::Init();
@@ -121,13 +121,32 @@ xAOD::Init();
 ~~~
  {: .source}
  
- We can then apply the kinematic requirements we defined in the `JetSelectionHelper` files.
+ In the `cmake` module, we added jet calibration so we then calibrate our jets.
+  ~~~
+  xAOD::Jet *calibratedjet;
+  JetCalibrationTool_handle->calibratedCopy(*jet,calibratedjet);
+~~~
+{: .source}
+
+We declare two type of jet vectors: `jets_raw` and `jets_kin`. The `jets_raw` vector contains all the jets in the DAOD while the `jets_kin` vector contains jets that pass the kinematic requirements we defined above.
+ 
+ The kinematic requirements defined in the `JetSelectionHelper` files are applied in the following lines of code:
  ~~~
- if( myJetTool.isJetGood(jet) ){
-   jets_kin.push_back(*jet);
+ if( jet_selector.isJetGood(calibratedjet) ){
+   jets_kin.push_back(*calibratedjet);
  }
 ~~~
 {: .source}
+
+> ## Declaring jet_selector
+>
+> Check which line of your code declares the jet_selector.
+>
+> > ## Solution
+> >
+> > JetSelectionHelper jet_selector;
+> {: .solution}
+{: .challenge}
 
 
 {% include links.md %}

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-07 13:52:47 -0700">
+    <meta http-equiv="last-modified" content="2021-10-22 01:31:57 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -117,6 +117,8 @@
             <li><a href="../06-analysisselection/index.html">Analysis selection</a></li>
             
             <li><a href="../07-cutflow/index.html">Cutflow</a></li>
+            
+            <li><a href="../08-condor/index.html">Optional: Using condor</a></li>
             
 	    <li role="separator" class="divider"></li>
             <li><a href="../aio/index.html">All in one page (Beta)</a></li>
@@ -273,7 +275,7 @@
 <blockquote class="challenge">
   <h2 id="electron-eta-requirement">Electron eta requirement</h2>
 
-  <p>Why do we veto electrron eta between 1.37 and 1.52?</p>
+  <p>Why do we veto electron eta between 1.37 and 1.52?</p>
 
   <blockquote class="solution">
     <h2 id="solution">Solution</h2>
@@ -304,7 +306,7 @@
 
 <h2 id="running-over-events">Running over events</h2>
 
-<p>We first initialize the EDM as shown in the following code snippet</p>
+<p>We first initialize the EDM as shown in the following code snippet. You will see the following pieces of code in <code class="language-plaintext highlighter-rouge">AnalysisPayload/util/AnalysisPayload.cxx</code>.</p>
 
 <div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xAOD::Init();
 </code></pre></div></div>
@@ -313,20 +315,35 @@
 <div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code> event.getEntry( i );
 </code></pre></div></div>
 
-<p>Object containers need to be retrieved from the event store. We create null pointer and fill all <code class="language-plaintext highlighter-rouge">AntiKt4EMTopoJets</code> into our <code class="language-plaintext highlighter-rouge">JetContainer</code>.</p>
+<p>Object containers need to be retrieved from the event store. We create null pointer and fill all <code class="language-plaintext highlighter-rouge">AntiKt4EMPFlowJets_BTagging201810</code> into our <code class="language-plaintext highlighter-rouge">JetContainer</code>.</p>
 <div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code> const xAOD::JetContainer* jets = nullptr;
- event.retrieve(jets, "AntiKt4EMTopoJets");
+ event.retrieve(jets, "AntiKt4EMPFlowJets_BTagging201810");
 </code></pre></div></div>
 
-<p>To be able to make use of the b-tagging later, let’s change the jet container we retrieve from <code class="language-plaintext highlighter-rouge">AntiKt4EMTopoJets</code> to <code class="language-plaintext highlighter-rouge">AntiKt4EMTopoJets_BTagging201810</code>. Your code should now look like this.</p>
-<pre class="source"><code class="language-code"> event.retrieve(jets, "AntiKt4EMTopoJets_BTagging201810");
-</code></pre>
+<p>In the <code class="language-plaintext highlighter-rouge">cmake</code> module, we added jet calibration so we then calibrate our jets.</p>
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  xAOD::Jet *calibratedjet;
+  JetCalibrationTool_handle-&gt;calibratedCopy(*jet,calibratedjet);
+</code></pre></div></div>
 
-<p>We can then apply the kinematic requirements we defined in the <code class="language-plaintext highlighter-rouge">JetSelectionHelper</code> files.</p>
-<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code> if( myJetTool.isJetGood(jet) ){
-   jets_kin.push_back(*jet);
+<p>We declare two type of jet vectors: <code class="language-plaintext highlighter-rouge">jets_raw</code> and <code class="language-plaintext highlighter-rouge">jets_kin</code>. The <code class="language-plaintext highlighter-rouge">jets_raw</code> vector contains all the jets in the DAOD while the <code class="language-plaintext highlighter-rouge">jets_kin</code> vector contains jets that pass the kinematic requirements we defined above.</p>
+
+<p>The kinematic requirements defined in the <code class="language-plaintext highlighter-rouge">JetSelectionHelper</code> files are applied in the following lines of code:</p>
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code> if( jet_selector.isJetGood(calibratedjet) ){
+   jets_kin.push_back(*calibratedjet);
  }
 </code></pre></div></div>
+
+<blockquote class="challenge">
+  <h2 id="declaring-jet_selector">Declaring jet_selector</h2>
+
+  <p>Check which line of your code declares the jet_selector.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution-1">Solution</h2>
+
+    <p>JetSelectionHelper jet_selector;</p>
+  </blockquote>
+</blockquote>
 
 
 

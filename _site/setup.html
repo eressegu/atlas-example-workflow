@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-07 13:52:47 -0700">
+    <meta http-equiv="last-modified" content="2021-10-22 01:31:57 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -118,6 +118,8 @@
             
             <li><a href="./07-cutflow/index.html">Cutflow</a></li>
             
+            <li><a href="./08-condor/index.html">Optional: Using condor</a></li>
+            
 	    <li role="separator" class="divider"></li>
             <li><a href="./aio/index.html">All in one page (Beta)</a></li>
           </ul>
@@ -155,16 +157,21 @@
 
 <p>This lesson builds on the <code class="language-plaintext highlighter-rouge">AnalysisPayload</code> program developed in the ATALS GitLab lesson. To continue, you will need to have a working version of it.</p>
 
-<p>If you had any issues working on your own project, you can always fork the example from the <a href="https://gitlab.cern.ch/usatlas-computing-bootcamp-2020/v6-atlas-cicd-finished-code">usatlas-computing-bootcamp-2020/v6-atlas-cicd-finished-code</a> GitLab repository.</p>
+<p>If you had any issues working on your own project, you can always fork the example from the <a href="https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/v6-atlas-cicd-finished-code">usatlas-computing-bootcamp-2020/v6-atlas-cicd-finished-code</a> GitLab repository.</p>
 
 <h1 id="quick-start">Quick Start</h1>
+<p>We need to ssh with the ability to use graphics</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh -XY &lt;username&gt;@login.af.uchicago.edu
+</code></pre></div></div>
+
 <p>Start by setting up the ATLAS environment and the athena release</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setupATLAS
 asetup AnalysisBase,21.2.186
 </code></pre></div></div>
 
 <p>Clone the starting point using</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone <span class="nt">--recursive</span> https://gitlab.cern.ch/usatlas-computing-bootcamp-2020/v6-atlas-cicd-finished-code
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lsetup git
+git clone <span class="nt">--recursive</span> https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/v6-atlas-cicd-finished-code.git
 </code></pre></div></div>
 
 

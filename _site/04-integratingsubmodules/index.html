@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-07 13:52:47 -0700">
+    <meta http-equiv="last-modified" content="2021-10-22 01:31:57 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -117,6 +117,8 @@
             <li><a href="../06-analysisselection/index.html">Analysis selection</a></li>
             
             <li><a href="../07-cutflow/index.html">Cutflow</a></li>
+            
+            <li><a href="../08-condor/index.html">Optional: Using condor</a></li>
             
 	    <li role="separator" class="divider"></li>
             <li><a href="../aio/index.html">All in one page (Beta)</a></li>
@@ -269,22 +271,18 @@ event.retrieve(muons, "Muons") ;
 
 <p>Let us first declare the <code class="language-plaintext highlighter-rouge">ElectronSelectionHelper</code> tool, similar to what was done for jets.</p>
 
-<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ElectronSelectionHelper myElectronTool;
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ElectronSelectionHelper electron_selector;
 </code></pre></div></div>
 
-<p>We can then create vectors for the electrons for the electrons in the dataset <code class="language-plaintext highlighter-rouge">electrons_raw</code> and those that pass the requirements in <code class="language-plaintext highlighter-rouge">ElectronSelectionHelper</code>.</p>
+<p>We will create a vector for the electrons that pass the requirements in <code class="language-plaintext highlighter-rouge">ElectronSelectionHelper</code> called <code class="language-plaintext highlighter-rouge">electrons_kin</code> (to follow the terminology we used for jets).</p>
 
-<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>std::vector&lt;xAOD::Electron&gt; electrons_raw;
-std::vector&lt;xAOD::Electron&gt; electrons_kin;
+<div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>std::vector&lt;xAOD::Electron&gt; electrons_kin;
 </code></pre></div></div>
 
 <p>We can loop over our electron container and fill electrons into the vectors, similar to what is done for the jets.</p>
 
 <div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for(const xAOD::Electron* electron : *electrons) {
-    electrons_raw.push_back(*electron);
-
-    // perform kinematic selections and store in vector of "selected electrons"                                                
-    if( myElectronTool.isElectronGood(electron) ){
+    if( electron_selector.isElectronGood(electron) ){
         electrons_kin.push_back(*electron);
     }
 }
@@ -299,7 +297,22 @@ std::vector&lt;xAOD::Electron&gt; electrons_kin;
 <blockquote class="challenge">
   <h2 id="adding-muons">Adding muons</h2>
 
-  <p>Modify the <code class="language-plaintext highlighter-rouge">AnalysisPayload</code> program to retrieve loop over the <code class="language-plaintext highlighter-rouge">muons</code> collection and store the muons into two vectors: one for all muons, another for those that pass the <code class="language-plaintext highlighter-rouge">isMuonGood</code> selection from <code class="language-plaintext highlighter-rouge">MuonSelectionHelper</code>.</p>
+  <p>Modify the <code class="language-plaintext highlighter-rouge">AnalysisPayload</code> program to retrieve loop over the <code class="language-plaintext highlighter-rouge">muons</code> collection and store the muons into a vector for the muons that pass the <code class="language-plaintext highlighter-rouge">isMuonGood</code> selection from <code class="language-plaintext highlighter-rouge">MuonSelectionHelper</code> called <code class="language-plaintext highlighter-rouge">muons_kin</code>.</p>
+
+</blockquote>
+
+<blockquote class="solution">
+  <h2 id="solution">Solution</h2>
+  <p>The lines of code you will need to add are shown below; however, their location is not specified.</p>
+
+  <div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MuonSelectionHelper muon_selector;
+std::vector&lt;xAOD::Muon&gt; muons_kin;
+for(const xAOD::Muon* muon : *muons) {
+   if( muon_selector.isMuonGood(muon) ){
+       muons_kin.push_back(*muon);
+   }
+}
+</code></pre></div>  </div>
 
 </blockquote>
 
@@ -309,12 +322,13 @@ std::vector&lt;xAOD::Electron&gt; electrons_kin;
 
 <p>Since we have added 2 submodules and included them in  <code class="language-plaintext highlighter-rouge">AnalysisPayload</code>, we also need to add them to the <code class="language-plaintext highlighter-rouge">CMakeLists.txt</code>.</p>
 
-<p>The libraries we need to link are <code class="language-plaintext highlighter-rouge">xAODEgamma</code>, <code class="language-plaintext highlighter-rouge">xAODMuon</code>, <code class="language-plaintext highlighter-rouge">ElectronSelectionHelperLib</code>, and <code class="language-plaintext highlighter-rouge">MuonSelectionHelperLib</code>.</p>
+<p>After you have updated the <code class="language-plaintext highlighter-rouge">CMakeLists.txt</code>, outside of <code class="language-plaintext highlighter-rouge">source</code>, compile and build your code.</p>
 
 <blockquote class="solution">
-  <h2 id="solution">Solution</h2>
+  <h2 id="solution-1">Solution</h2>
 
-  <p>Your <code class="language-plaintext highlighter-rouge">AnalysisPayload/CMakeLists.txt</code> should now contain the following.</p>
+  <p>The libraries we need to link are <code class="language-plaintext highlighter-rouge">xAODEgamma</code>, <code class="language-plaintext highlighter-rouge">xAODMuon</code>, <code class="language-plaintext highlighter-rouge">ElectronSelectionHelperLib</code>, and <code class="language-plaintext highlighter-rouge">MuonSelectionHelperLib</code>.
+Your <code class="language-plaintext highlighter-rouge">AnalysisPayload/CMakeLists.txt</code> should now contain the following.</p>
 
   <div class="language-cmake source highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">ATLAS_ADD_EXECUTABLE</span> <span class="p">(</span> AnalysisPayload utils/AnalysisPayload.cxx
 INCLUDE_DIRS <span class="si">${</span><span class="nv">ROOT_INCLUDE_DIRS</span><span class="si">}</span>

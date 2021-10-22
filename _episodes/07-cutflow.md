@@ -46,14 +46,14 @@ Since we applied no requirements, this will count all events.
 We will now apply each requirement in order and only keep events that satisfy each requirement. Let's first require at least 2 good calibrated jets. After you veto events that fail the requirement, you will fill the next bin in the cutflow histogram.
 
 ~~~code
-if ( !(jets_kin_cal.size()>=2) ) continue;
+if ( !(jets_kin.size()>=2) ) continue;
 h_cutflow->Fill(1);
 ~~~
 {: .source}
 
 Now, the remaining requirements are as follows: 
 - at least 2 b-tagged jets  
-- exactly 2 electrons 
+- exactly two opposite-sign electrons 
 - \|mjj - 125\| < 25  because the invariant mass of the dijet system should be close to the Higgs mass
 - \|mll - 90\| < 10 because of the invariant mass of the two leptons should be close to the Z mass
 
@@ -68,25 +68,45 @@ Now, the remaining requirements are as follows:
 > if ( !(electrons_kin.size() == 2 && electrons_kin.at(0).charge() !=  electrons_kin.at(1).charge()) ) continue;
 > h_cutflow->Fill(3);
 > 
-> if ( !(abs((jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. - 125.) < 25) ) continue;
+> if ( !(std::abs((jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. - 125.) < 25) ) continue;
 > h_cutflow->Fill(4);
 > 
-> if ( !(abs((electrons_kin.at(0).p4()+electrons_kin.at(1).p4()).M()/1000. - 90.) < 10) )continue;
+> if ( !(std::abs((electrons_kin.at(0).p4()+electrons_kin.at(1).p4()).M()/1000. - 90.) < 10) )continue;
 > h_cutflow->Fill(5);
 > ~~~
 > {: .source}
 >
 {: .solution}
 
-Write your histogram to the file then you can compile and run the code.
+Write your histogram to the file then you can recompile and run the code.
 
 ![image info](./../fig/cutflow.jpg)
 
 Most of the inefficiency comes from requiring 2 b-tagged jets. 
 
+You notice that it's hard to see your cutflow in this linear scale so we can instead draw this on a log scale. 
+
+In `root`, you'll first create a `TCanvas`. Then you will set the canvas to a logarithmic scale. Finally, you can draw your histogram.
+
+> ## Solution
+>
+> ~~~code
+> TCanvas c1 = new TCanvas()
+> c1.SetLogy()
+> h_cutflow->Draw()
+> ~~~
+> {: .source}
+>
+{: .solution}
+
+
 > ## Other selections
 >
-> Modify the number of b-jets and see the impact on the cutflow. You can also feel free to different diffferent requirements.
+> Modify the number of b-jets and see the impact on the cutflow.
+>
+> Instead of requiring exactly two opposite-sign electrons, require exactly two opposite-sign electrons OR exactly two opposite-sign muons, then calculate mll appropriately using either electrons or muons.
+>
+> You can also feel free to different diffferent requirements (i.e. the pt of the jets, the pt of the leptons).
 >
 {: .challenge}
 

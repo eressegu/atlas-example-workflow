@@ -30,20 +30,43 @@ Now that we have our objects, we now need to define our event. We apply requirem
 
 Our MC include a higgs that decays to 2 b-jets. Our analysis therefore selects at least 2 jets. To determine if the jets originate from the Higgs boson, we can calculate the invariant mass of the jets.
 
+Let's first create a histogram to save our invariant mass histogram and one for the number of jets. We use the suffix `kin` so we know that we are using jets that pass the kinematic selection (as opposed to `raw`).
+~~~code
+TH1D *h_mjj_kin = new TH1D("h_mjj_kin","",100,0,500);
+TH1D *h_njets_kin = new TH1D("h_njets_kin","",20,0,20);
+~~~
+
+Then we select events with at least 2 jets to fill the mjj histogram and we fill the number of calibrated jets in the njets histogram.
 ~~~code
 if( jets_kin.size()>=2 ){
   h_mjj_kin->Fill( (jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. );
 }
+h_njets_kin->Fill( jets_kin.size() );
 ~~~
 {: .source}
 
-Here, we see that we check the size of the `jets_kin` vector. This vector contains the jets that have passed the `isGoodJet` function. The function `.p4()` gives the four-momentum of the particle. 
+Here, we see that we check the size of the `jets_kin` vector. This vector contains the calibrated jets that have passed the `isGoodJet` function. The function `.p4()` gives the four-momentum of the particle. 
 
 The invariant mass of the jets is the mass of the vectorr sum of the two jets. This quantity is divided by `1000` to convert from `MeV` to `TeV`.
 
-The  `h_mjj_kin_cal` is the invariant of the calibrated jets that pass the `pt` and `eta` requirements. Since we have calibrated jets, we should use those in our event selection.
+In order to save your histograms to the output root file, you need to write those histograms to the file.
+~~~code
+h_njet_kin->Write();
+h_mjj_kin->Write();
+~~~
 
-After running our code, we produce an output file, `myOutputFile.root`.
+Now recompile and run the analysis. This will produce an output file: `myOutputFile.root`.
+
+> ## Question
+>
+> From which folder do we run the analyis?
+>
+> > ## Solution
+> >
+> > From the `run` folder.
+> {: .solution}
+{: .challenge}
+
 
 We can look at the distributions before applying additional selections. To do this, we open our file in root.
 
@@ -66,20 +89,16 @@ To view the contents of the file, type `.ls`.
 root [1] .ls
 TFile**        myOutputFile.root    
  TFile*        myOutputFile.root    
-  KEY: TH1D    h_njets_raw;1    
+  KEY: TH1D    h_njets_raw;1   
   KEY: TH1D    h_njets_kin;1    
-  KEY: TH1D    h_njets_raw_cal;1    
-  KEY: TH1D    h_njets_kin_cal;1    
   KEY: TH1D    h_mjj_raw;1    
   KEY: TH1D    h_mjj_kin;1    
-  KEY: TH1D    h_mjj_raw_cal;1    
-  KEY: TH1D    h_mjj_kin_cal;1    
 ~~~
 {: .source}
 
 To visualize a histogram, you need to use the `Draw()` function with the name of the histogram you wish to draw
 ~~~bash
-root [2] h_mjj_kin_cal->Draw()
+root [2] h_mjj_kin->Draw()
 ~~~
 {: .source}
 
@@ -88,9 +107,9 @@ This will open a canvas wiith the invariant mass plot that you have filled when 
 
 We see a peak around 125 GeV, the mass of the Higgs boson, but we also see a long tail. 
 
-Looking at additional distributions can help us understand what is happening. Let's draw the `h_njets_kin_cal` histogram
+Looking at additional distributions can help us understand what is happening. Let's draw the `h_njets_kin` histogram
 ~~~bash
-root [2] h_njets_kin_cal->Draw()
+root [2] h_njets_kin->Draw()
 ~~~
 {: .source}
 
@@ -102,16 +121,15 @@ The event has more than 2 jets; therefore there is ambiguity as to which jet cam
 Let's create some empty histograms for the number of b-jets, mjj for at least 1 b-tagged jet, and mjj for at least 2 b-tagged jets.
 
 ~~~code
-TH1D *h_nbjets_kin_cal = new TH1D("h_nbjets_kin_cal","",20,0,20);
-TH1D *h_mjj_kin_cal_1b = new TH1D("h_mjj_kin_cal_1b","",100,0,500);
-TH1D *h_mjj_kin_cal_2b = new TH1D("h_mjj_kin_cal_2b","",100,0,500);
+TH1D *h_nbjets_kin = new TH1D("h_nbjets_kin","",20,0,20);
+TH1D *h_mjj_kin_1b = new TH1D("h_mjj_kin_1b","",100,0,500);
+TH1D *h_mjj_kin_2b = new TH1D("h_mjj_kin_2b","",100,0,500);
 ~~~
 {: .source}
 
 We also define a counter for the number of b-tagged jets in the event, `n_bjet` after we load the event.
 
 ~~~code 
-event.getEntry( i );
 int n_bjet = 0;
 ~~~
 {: .source}
@@ -121,9 +139,9 @@ We will increment the `n_bjet` counter if the good calibrated jet is b-tagged. T
 The code should look as follows
 
 ~~~code
-if( myJetTool.isJetGood(calibratedjet) ){
-  jets_kin_cal.push_back(*calibratedjet);
-  if ( myJetTool.isJetBFlavor(calibratedjet)){
+if( jet_selector.isJetGood(calibratedjet) ){
+  jets_kin.push_back(*calibratedjet);
+  if ( jet_selector.isJetBFlavor(calibratedjet)){
         n_bjet ++;
   }
 }
@@ -133,12 +151,12 @@ if( myJetTool.isJetGood(calibratedjet) ){
 Now, we can fill our `mjj` histograms with the invariant mass of calibrated dijet system based on the number of b-jets, as shown in the following code.
 
 ~~~code
-if( jets_kin_cal.size()>=2 ){
-  h_mjj_kin_cal->Fill( (jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. );
+if( jets_kin.size()>=2 ){
+  h_mjj_kin->Fill( (jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. );
 
-  h_nbjets_kin_cal->Fill(n_bjet);
-  if (n_bjet >= 1) h_mjj_kin_cal_1b->Fill( (jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. );
-  if (n_bjet >= 2) h_mjj_kin_cal_2b->Fill( (jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. );
+  h_nbjets_kin->Fill(n_bjet);
+  if (n_bjet >= 1) h_mjj_kin_1b->Fill( (jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. );
+  if (n_bjet >= 2) h_mjj_kin_2b->Fill( (jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. );
 }
 ~~~
 {: .source}
@@ -147,13 +165,13 @@ We have filled our histograms if there are at least 2 good calibrated jets. We t
 
 The final step is writing the histograms to file.
 ~~~code
-h_nbjets_kin_cal->Write();
-h_mjj_kin_cal_1b->Write();
-h_mjj_kin_cal_2b->Write();
+h_nbjets_kin->Write();
+h_mjj_kin_1b->Write();
+h_mjj_kin_2b->Write();
 ~~~
 {: .source}
 
-Now you need to compile and run the code to produce a new output. You should be able to see the new histograms you have added.
+Now you need to recompile and run the analysis to produce a new output. You should be able to see the new histograms you have added in your output file.
 
 ~~~bash
 root [1] .ls
@@ -161,19 +179,15 @@ TFile**        myOutputFile.root
  TFile*        myOutputFile.root    
   KEY: TH1D    h_njets_raw;1    
   KEY: TH1D    h_njets_kin;1    
-  KEY: TH1D    h_njets_raw_cal;1    
-  KEY: TH1D    h_njets_kin_cal;1    
-  KEY: TH1D    h_nbjets_kin_cal;1    
-  KEY: TH1D    h_mjj_kin_cal_1b;1    
-  KEY: TH1D    h_mjj_kin_cal_2b;1    
   KEY: TH1D    h_mjj_raw;1    
   KEY: TH1D    h_mjj_kin;1    
-  KEY: TH1D    h_mjj_raw_cal;1    
-  KEY: TH1D    h_mjj_kin_cal;1    
+  KEY: TH1D    h_nbjets_kin;1    
+  KEY: TH1D    h_mjj_kin_1b;1    
+  KEY: TH1D    h_mjj_kin_2b;1    
 ~~~
 {: .source}
 
-You should draw `h_mjj_kin_cal_2b`. You will notice that there are less events but the peak around the Higgs mass is more pronounced.
+You should draw `h_mjj_kin_2b`. You will notice that there are less events but the peak around the Higgs mass is more pronounced.
 ![image info](./../fig/mjj_2b.jpg)
 
 ## Selecting Z candidates 
@@ -210,6 +224,17 @@ After you compile and run, you will see `h_mll_kin` in your output file, `myOutp
 > Modify the if statement above to fill `h_mll_kin` if there are exactly 2 electrons or 2 muons and their charges are opposite.
 >
 {: .challenge}
+
+> ## Solution
+> ~~~
+>if ( (electrons_kin.size() == 2 && electrons_kin.at(0).charge() !=  electrons_kin.at(1).charge()) || (muons_kin.size() == 2 && muons_kin.at(0).charge() !=  muons_kin.at(1).charge()) ){
+> if (electrons_kin.size() == 2) h_mll_kin->Fill( (electrons_kin.at(0).p4()+electrons_kin.at(1).p4()).M()/1000. );
+> else h_mll_kin->Fill( (muons_kin.at(0).p4()+muons_kin.at(1).p4()).M()/1000. );
+>}
+> ~~~
+> {: .source}
+>
+{: .solution}
 
 
 {% include links.md %}

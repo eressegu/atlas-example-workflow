@@ -6,6 +6,11 @@ This lesson builds on the `AnalysisPayload` program developed in the ATALS GitLa
 If you had any issues working on your own project, you can always fork the example from the [usatlas-computing-bootcamp-2020/v6-atlas-cicd-finished-code](https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/v6-atlas-cicd-finished-code) GitLab repository.
 
 # Quick Start
+We need to ssh with the ability to use graphics
+~~~
+ssh -XY <username>@login.af.uchicago.edu
+~~~
+
 Start by setting up the ATLAS environment and the athena release
 ~~~
 setupATLAS
@@ -16,6 +21,7 @@ asetup AnalysisBase,21.2.186
 
 Clone the starting point using
 ~~~
+lsetup git
 git clone --recursive https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/v6-atlas-cicd-finished-code.git
 ~~~
 {: .language-bash}

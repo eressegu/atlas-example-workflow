@@ -65,14 +65,13 @@ Now that we have retrieved the electrons and muons, we want to save the electron
 Let us first declare the `ElectronSelectionHelper` tool, similar to what was done for jets.
 
 ~~~
-ElectronSelectionHelper myElectronTool;
+ElectronSelectionHelper electron_selector;
 ~~~
 {: .source}
 
-We can then create vectors for the electrons for the electrons in the dataset `electrons_raw` and those that pass the requirements in `ElectronSelectionHelper`. 
+We will create a vector for the electrons that pass the requirements in `ElectronSelectionHelper` called `electrons_kin` (to follow the terminology we used for jets). 
 
 ~~~
-std::vector<xAOD::Electron> electrons_raw;
 std::vector<xAOD::Electron> electrons_kin;
 ~~~
 {: .source}
@@ -81,10 +80,7 @@ We can loop over our electron container and fill electrons into the vectors, sim
 
 ~~~
 for(const xAOD::Electron* electron : *electrons) {
-    electrons_raw.push_back(*electron);
-
-    // perform kinematic selections and store in vector of "selected electrons"                                                
-    if( myElectronTool.isElectronGood(electron) ){
+    if( electron_selector.isElectronGood(electron) ){
         electrons_kin.push_back(*electron);
     }
 }
@@ -101,9 +97,26 @@ The only variable that is new in this printout for electrons, as opposed to jets
 
 > ## Adding muons
 >
-> Modify the `AnalysisPayload` program to retrieve loop over the `muons` collection and store the muons into two vectors: one for all muons, another for those that pass the `isMuonGood` selection from `MuonSelectionHelper`.
+> Modify the `AnalysisPayload` program to retrieve loop over the `muons` collection and store the muons into a vector for the muons that pass the `isMuonGood` selection from `MuonSelectionHelper` called `muons_kin`.
 >
 {: .challenge}
+
+> ## Solution
+> The lines of code you will need to add are shown below; however, their location is not specified.
+>
+> ~~~
+> MuonSelectionHelper muon_selector;
+> std::vector<xAOD::Muon> muons_kin;
+> for(const xAOD::Muon* muon : *muons) {
+>    if( muon_selector.isMuonGood(muon) ){
+>        muons_kin.push_back(*muon);
+>    }
+> }
+> ~~~
+> {: .source}
+>
+{: .solution}
+
 
 # Updating the CMakeLists
 
@@ -111,10 +124,11 @@ In the CMake module, you saw that when you added the `jet calibration` libraries
 
 Since we have added 2 submodules and included them in  `AnalysisPayload`, we also need to add them to the `CMakeLists.txt`.
 
-The libraries we need to link are `xAODEgamma`, `xAODMuon`, `ElectronSelectionHelperLib`, and `MuonSelectionHelperLib`.
+After you have updated the `CMakeLists.txt`, outside of `source`, compile and build your code.
 
 > ## Solution
 >
+> The libraries we need to link are `xAODEgamma`, `xAODMuon`, `ElectronSelectionHelperLib`, and `MuonSelectionHelperLib`.
 > Your `AnalysisPayload/CMakeLists.txt` should now contain the following.
 >
 > ~~~cmake

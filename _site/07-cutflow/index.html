@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-07 13:52:47 -0700">
+    <meta http-equiv="last-modified" content="2021-10-22 01:31:57 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -118,6 +118,8 @@
             
             <li><a href="../07-cutflow/index.html">Cutflow</a></li>
             
+            <li><a href="../08-condor/index.html">Optional: Using condor</a></li>
+            
 	    <li role="separator" class="divider"></li>
             <li><a href="../aio/index.html">All in one page (Beta)</a></li>
           </ul>
@@ -167,7 +169,7 @@
   <div class="col-xs-1">
     <h3 class="text-right">
       
-      <a href="../"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span><span class="sr-only">lesson home</span></a>
+      <a href="../08-condor/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
       
     </h3>
   </div>
@@ -252,14 +254,14 @@
 
 <p>We will now apply each requirement in order and only keep events that satisfy each requirement. Let’s first require at least 2 good calibrated jets. After you veto events that fail the requirement, you will fill the next bin in the cutflow histogram.</p>
 
-<pre class="source"><code class="language-code">if ( !(jets_kin_cal.size()&gt;=2) ) continue;
+<pre class="source"><code class="language-code">if ( !(jets_kin.size()&gt;=2) ) continue;
 h_cutflow-&gt;Fill(1);
 </code></pre>
 
 <p>Now, the remaining requirements are as follows:</p>
 <ul>
   <li>at least 2 b-tagged jets</li>
-  <li>exactly 2 electrons</li>
+  <li>exactly two opposite-sign electrons</li>
   <li>|mjj - 125| &lt; 25  because the invariant mass of the dijet system should be close to the Higgs mass</li>
   <li>|mll - 90| &lt; 10 because of the invariant mass of the two leptons should be close to the Z mass</li>
 </ul>
@@ -275,29 +277,47 @@ h_cutflow-&gt;Fill(2);
 if ( !(electrons_kin.size() == 2 &amp;&amp; electrons_kin.at(0).charge() !=  electrons_kin.at(1).charge()) ) continue;
 h_cutflow-&gt;Fill(3);
 
-if ( !(abs((jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. - 125.) &lt; 25) ) continue;
+if ( !(std::abs((jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. - 125.) &lt; 25) ) continue;
 h_cutflow-&gt;Fill(4);
 
-if ( !(abs((electrons_kin.at(0).p4()+electrons_kin.at(1).p4()).M()/1000. - 90.) &lt; 10) )continue;
+if ( !(std::abs((electrons_kin.at(0).p4()+electrons_kin.at(1).p4()).M()/1000. - 90.) &lt; 10) )continue;
 h_cutflow-&gt;Fill(5);
 </code></pre>
 
 </blockquote>
 
-<p>Write your histogram to the file then you can compile and run the code.</p>
+<p>Write your histogram to the file then you can recompile and run the code.</p>
 
 <p><img src="./../fig/cutflow.jpg" alt="image info" /></p>
 
 <p>Most of the inefficiency comes from requiring 2 b-tagged jets.</p>
 
-<blockquote class="challenge">
-  <h2 id="other-selections">Other selections</h2>
+<p>You notice that it’s hard to see your cutflow in this linear scale so we can instead draw this on a log scale.</p>
 
-  <p>Modify the number of b-jets and see the impact on the cutflow. You can also feel free to different diffferent requirements.</p>
+<p>In <code class="language-plaintext highlighter-rouge">root</code>, you’ll first create a <code class="language-plaintext highlighter-rouge">TCanvas</code>. Then you will set the canvas to a logarithmic scale. Finally, you can draw your histogram.</p>
+
+<blockquote class="solution">
+  <h2 id="solution-1">Solution</h2>
+
+  <pre class="source"><code class="language-code">TCanvas c1 = new TCanvas()
+c1.SetLogy()
+h_cutflow-&gt;Draw()
+</code></pre>
 
 </blockquote>
 
-<p>This completes today’s module. For the full code from this module, please refer to the <a href="https://gitlab.cern.ch/eressegu/atlas-example-workflow">ATLAS Example Workflow</a> repositoryy.</p>
+<blockquote class="challenge">
+  <h2 id="other-selections">Other selections</h2>
+
+  <p>Modify the number of b-jets and see the impact on the cutflow.</p>
+
+  <p>Instead of requiring exactly two opposite-sign electrons, require exactly two opposite-sign electrons OR exactly two opposite-sign muons, then calculate mll appropriately using either electrons or muons.</p>
+
+  <p>You can also feel free to different diffferent requirements (i.e. the pt of the jets, the pt of the leptons).</p>
+
+</blockquote>
+
+<p>This completes today’s module. For the full code from this module, please refer to the <a href="https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/v8-example-workflow">ATLAS Example Workflow</a> repository.</p>
 
 
 
@@ -327,7 +347,7 @@ h_cutflow-&gt;Fill(5);
   <div class="col-xs-1">
     <h3 class="text-right">
       
-      <a href="../"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span><span class="sr-only">lesson home</span></a>
+      <a href="../08-condor/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
       
     </h3>
   </div>

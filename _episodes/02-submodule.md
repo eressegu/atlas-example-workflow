@@ -10,12 +10,33 @@ keypoints:
 - "We can add more than one submodule"
 ---
 
+# Changing the data path
+
+Since the `inputFilePath` in `source/util/AnalysisPayload.cxx` is out of date, let's first update that since we will need to run our analyis during the module.
+
+The new data file is:
+~~~
+/work/eresseguie/bootcamp/DAOD_EXOT27.24604725._000001.pool.root.1
+~~~
+
+If you clone, you will need to add some updates from the CI/CD module so let's add them here.
+
+Change `int main()` to:
+~~~
+int main(int argc, char** argv) {
+~~~
+
+and add 
+~~~
+if(argc >= 2) inputFilePath = argv[1];
+~~~
+under the `TString inputFilePath` line.
 
 # Preparing your repository and compiling existing code
 
 Before making modifications, it is always good to compile the exisiting directory to make sure there are no errors.
 
-You will need to first create two folders: one for the compiled binaries (`build`), one for the analysis results (`run`).
+Inside the folder you have cloned, you will need to first create two folders: one for the compiled binaries (`build`), one for the analysis results (`run`).
 
 Let's create our two folders:
 ~~~shell
@@ -30,10 +51,8 @@ You should then build and compile your code.
 > Here is the sequence of commands to build and compile your code.
 >
 > ~~~shell
-> cd build/
-> cmake ../source
-> make
-> cd ..
+> cmake -Ssource -Bbuild
+> cmake --build build
 > source build/x86_64-centos7-gcc8-opt/setup.sh
 > ~~~
 > {: .source}
@@ -47,7 +66,9 @@ You can also run your code now if you would like before moving to the next step.
 
 The MC process we are studying does not only have b-jets, it also has leptons. For leptons, we'll only consider electrons and muons.
 
-For the jet selection, we added the git submodule `JetSelectionHelper` in a previous module. We will now add two new submodules for the electron and muon selections: [`ElectronSelectionHelper`](https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/ElectronSelectionHelper) and the [`MuonSelectionHelper`](https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/MuonSelectionHelper). We also want to add both of these subomdules to the source folder.
+For the jet selection, we added the git submodule `JetSelectionHelper` in a previous module. We will now add two new submodules for the electron and muon selections: [`ElectronSelectionHelper`](https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/ElectronSelectionHelper) and the [`MuonSelectionHelper`](https://gitlab.cern.ch/usatlas-computing-bootcamp-2021/MuonSelectionHelper). 
+
+We want to add both of these subomdules to the source folder.
 
 > ## Solution
 >

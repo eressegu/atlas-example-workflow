@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2021-10-07 13:52:47 -0700">
+    <meta http-equiv="last-modified" content="2021-10-22 01:31:57 -0700">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -117,6 +117,8 @@
             <li><a href="../06-analysisselection/index.html">Analysis selection</a></li>
             
             <li><a href="../07-cutflow/index.html">Cutflow</a></li>
+            
+            <li><a href="../08-condor/index.html">Optional: Using condor</a></li>
             
 	    <li role="separator" class="divider"></li>
             <li><a href="../aio/index.html">All in one page (Beta)</a></li>
@@ -241,18 +243,40 @@
 
 <p>Our MC include a higgs that decays to 2 b-jets. Our analysis therefore selects at least 2 jets. To determine if the jets originate from the Higgs boson, we can calculate the invariant mass of the jets.</p>
 
+<p>Let’s first create a histogram to save our invariant mass histogram and one for the number of jets. We use the suffix <code class="language-plaintext highlighter-rouge">kin</code> so we know that we are using jets that pass the kinematic selection (as opposed to <code class="language-plaintext highlighter-rouge">raw</code>).</p>
+<pre><code class="language-code">TH1D *h_mjj_kin = new TH1D("h_mjj_kin","",100,0,500);
+TH1D *h_njets_kin = new TH1D("h_njets_kin","",20,0,20);
+</code></pre>
+
+<p>Then we select events with at least 2 jets to fill the mjj histogram and we fill the number of calibrated jets in the njets histogram.</p>
 <pre class="source"><code class="language-code">if( jets_kin.size()&gt;=2 ){
   h_mjj_kin-&gt;Fill( (jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. );
 }
+h_njets_kin-&gt;Fill( jets_kin.size() );
 </code></pre>
 
-<p>Here, we see that we check the size of the <code class="language-plaintext highlighter-rouge">jets_kin</code> vector. This vector contains the jets that have passed the <code class="language-plaintext highlighter-rouge">isGoodJet</code> function. The function <code class="language-plaintext highlighter-rouge">.p4()</code> gives the four-momentum of the particle.</p>
+<p>Here, we see that we check the size of the <code class="language-plaintext highlighter-rouge">jets_kin</code> vector. This vector contains the calibrated jets that have passed the <code class="language-plaintext highlighter-rouge">isGoodJet</code> function. The function <code class="language-plaintext highlighter-rouge">.p4()</code> gives the four-momentum of the particle.</p>
 
 <p>The invariant mass of the jets is the mass of the vectorr sum of the two jets. This quantity is divided by <code class="language-plaintext highlighter-rouge">1000</code> to convert from <code class="language-plaintext highlighter-rouge">MeV</code> to <code class="language-plaintext highlighter-rouge">TeV</code>.</p>
 
-<p>The  <code class="language-plaintext highlighter-rouge">h_mjj_kin_cal</code> is the invariant of the calibrated jets that pass the <code class="language-plaintext highlighter-rouge">pt</code> and <code class="language-plaintext highlighter-rouge">eta</code> requirements. Since we have calibrated jets, we should use those in our event selection.</p>
+<p>In order to save your histograms to the output root file, you need to write those histograms to the file.</p>
+<pre><code class="language-code">h_njet_kin-&gt;Write();
+h_mjj_kin-&gt;Write();
+</code></pre>
 
-<p>After running our code, we produce an output file, <code class="language-plaintext highlighter-rouge">myOutputFile.root</code>.</p>
+<p>Now recompile and run the analysis. This will produce an output file: <code class="language-plaintext highlighter-rouge">myOutputFile.root</code>.</p>
+
+<blockquote class="challenge">
+  <h2 id="question">Question</h2>
+
+  <p>From which folder do we run the analyis?</p>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+
+    <p>From the <code class="language-plaintext highlighter-rouge">run</code> folder.</p>
+  </blockquote>
+</blockquote>
 
 <p>We can look at the distributions before applying additional selections. To do this, we open our file in root.</p>
 
@@ -270,18 +294,14 @@ root <span class="o">[</span>1]
 <div class="language-bash source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root <span class="o">[</span>1] .ls
 TFile<span class="k">**</span>        myOutputFile.root    
  TFile<span class="k">*</span>        myOutputFile.root    
-  KEY: TH1D    h_njets_raw<span class="p">;</span>1    
+  KEY: TH1D    h_njets_raw<span class="p">;</span>1   
   KEY: TH1D    h_njets_kin<span class="p">;</span>1    
-  KEY: TH1D    h_njets_raw_cal<span class="p">;</span>1    
-  KEY: TH1D    h_njets_kin_cal<span class="p">;</span>1    
   KEY: TH1D    h_mjj_raw<span class="p">;</span>1    
   KEY: TH1D    h_mjj_kin<span class="p">;</span>1    
-  KEY: TH1D    h_mjj_raw_cal<span class="p">;</span>1    
-  KEY: TH1D    h_mjj_kin_cal<span class="p">;</span>1    
 </code></pre></div></div>
 
 <p>To visualize a histogram, you need to use the <code class="language-plaintext highlighter-rouge">Draw()</code> function with the name of the histogram you wish to draw</p>
-<div class="language-bash source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root <span class="o">[</span>2] h_mjj_kin_cal-&gt;Draw<span class="o">()</span>
+<div class="language-bash source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root <span class="o">[</span>2] h_mjj_kin-&gt;Draw<span class="o">()</span>
 </code></pre></div></div>
 
 <p>This will open a canvas wiith the invariant mass plot that you have filled when you ran the <code class="language-plaintext highlighter-rouge">AnalysisPayload</code> code.
@@ -289,8 +309,8 @@ TFile<span class="k">**</span>        myOutputFile.root
 
 <p>We see a peak around 125 GeV, the mass of the Higgs boson, but we also see a long tail.</p>
 
-<p>Looking at additional distributions can help us understand what is happening. Let’s draw the <code class="language-plaintext highlighter-rouge">h_njets_kin_cal</code> histogram</p>
-<div class="language-bash source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root <span class="o">[</span>2] h_njets_kin_cal-&gt;Draw<span class="o">()</span>
+<p>Looking at additional distributions can help us understand what is happening. Let’s draw the <code class="language-plaintext highlighter-rouge">h_njets_kin</code> histogram</p>
+<div class="language-bash source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root <span class="o">[</span>2] h_njets_kin-&gt;Draw<span class="o">()</span>
 </code></pre></div></div>
 
 <p>The canvas produces the number of calibrated good jets. 
@@ -300,24 +320,23 @@ TFile<span class="k">**</span>        myOutputFile.root
 
 <p>Let’s create some empty histograms for the number of b-jets, mjj for at least 1 b-tagged jet, and mjj for at least 2 b-tagged jets.</p>
 
-<pre class="source"><code class="language-code">TH1D *h_nbjets_kin_cal = new TH1D("h_nbjets_kin_cal","",20,0,20);
-TH1D *h_mjj_kin_cal_1b = new TH1D("h_mjj_kin_cal_1b","",100,0,500);
-TH1D *h_mjj_kin_cal_2b = new TH1D("h_mjj_kin_cal_2b","",100,0,500);
+<pre class="source"><code class="language-code">TH1D *h_nbjets_kin = new TH1D("h_nbjets_kin","",20,0,20);
+TH1D *h_mjj_kin_1b = new TH1D("h_mjj_kin_1b","",100,0,500);
+TH1D *h_mjj_kin_2b = new TH1D("h_mjj_kin_2b","",100,0,500);
 </code></pre>
 
 <p>We also define a counter for the number of b-tagged jets in the event, <code class="language-plaintext highlighter-rouge">n_bjet</code> after we load the event.</p>
 
-<pre class="source"><code class="language-code">event.getEntry( i );
-int n_bjet = 0;
+<pre class="source"><code class="language-code">int n_bjet = 0;
 </code></pre>
 
 <p>We will increment the <code class="language-plaintext highlighter-rouge">n_bjet</code> counter if the good calibrated jet is b-tagged. To check if the jet is b-tagged, we will use the function <code class="language-plaintext highlighter-rouge">isJetBFlavor</code> from the <code class="language-plaintext highlighter-rouge">JetSelectionHelper</code> tool.</p>
 
 <p>The code should look as follows</p>
 
-<pre class="source"><code class="language-code">if( myJetTool.isJetGood(calibratedjet) ){
-  jets_kin_cal.push_back(*calibratedjet);
-  if ( myJetTool.isJetBFlavor(calibratedjet)){
+<pre class="source"><code class="language-code">if( jet_selector.isJetGood(calibratedjet) ){
+  jets_kin.push_back(*calibratedjet);
+  if ( jet_selector.isJetBFlavor(calibratedjet)){
         n_bjet ++;
   }
 }
@@ -325,42 +344,38 @@ int n_bjet = 0;
 
 <p>Now, we can fill our <code class="language-plaintext highlighter-rouge">mjj</code> histograms with the invariant mass of calibrated dijet system based on the number of b-jets, as shown in the following code.</p>
 
-<pre class="source"><code class="language-code">if( jets_kin_cal.size()&gt;=2 ){
-  h_mjj_kin_cal-&gt;Fill( (jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. );
+<pre class="source"><code class="language-code">if( jets_kin.size()&gt;=2 ){
+  h_mjj_kin-&gt;Fill( (jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. );
 
-  h_nbjets_kin_cal-&gt;Fill(n_bjet);
-  if (n_bjet &gt;= 1) h_mjj_kin_cal_1b-&gt;Fill( (jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. );
-  if (n_bjet &gt;= 2) h_mjj_kin_cal_2b-&gt;Fill( (jets_kin_cal.at(0).p4()+jets_kin_cal.at(1).p4()).M()/1000. );
+  h_nbjets_kin-&gt;Fill(n_bjet);
+  if (n_bjet &gt;= 1) h_mjj_kin_1b-&gt;Fill( (jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. );
+  if (n_bjet &gt;= 2) h_mjj_kin_2b-&gt;Fill( (jets_kin.at(0).p4()+jets_kin.at(1).p4()).M()/1000. );
 }
 </code></pre>
 
 <p>We have filled our histograms if there are at least 2 good calibrated jets. We then check the number of b-jets before filling the appropriate histograms.</p>
 
 <p>The final step is writing the histograms to file.</p>
-<pre class="source"><code class="language-code">h_nbjets_kin_cal-&gt;Write();
-h_mjj_kin_cal_1b-&gt;Write();
-h_mjj_kin_cal_2b-&gt;Write();
+<pre class="source"><code class="language-code">h_nbjets_kin-&gt;Write();
+h_mjj_kin_1b-&gt;Write();
+h_mjj_kin_2b-&gt;Write();
 </code></pre>
 
-<p>Now you need to compile and run the code to produce a new output. You should be able to see the new histograms you have added.</p>
+<p>Now you need to recompile and run the analysis to produce a new output. You should be able to see the new histograms you have added in your output file.</p>
 
 <div class="language-bash source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root <span class="o">[</span>1] .ls
 TFile<span class="k">**</span>        myOutputFile.root    
  TFile<span class="k">*</span>        myOutputFile.root    
   KEY: TH1D    h_njets_raw<span class="p">;</span>1    
   KEY: TH1D    h_njets_kin<span class="p">;</span>1    
-  KEY: TH1D    h_njets_raw_cal<span class="p">;</span>1    
-  KEY: TH1D    h_njets_kin_cal<span class="p">;</span>1    
-  KEY: TH1D    h_nbjets_kin_cal<span class="p">;</span>1    
-  KEY: TH1D    h_mjj_kin_cal_1b<span class="p">;</span>1    
-  KEY: TH1D    h_mjj_kin_cal_2b<span class="p">;</span>1    
   KEY: TH1D    h_mjj_raw<span class="p">;</span>1    
   KEY: TH1D    h_mjj_kin<span class="p">;</span>1    
-  KEY: TH1D    h_mjj_raw_cal<span class="p">;</span>1    
-  KEY: TH1D    h_mjj_kin_cal<span class="p">;</span>1    
+  KEY: TH1D    h_nbjets_kin<span class="p">;</span>1    
+  KEY: TH1D    h_mjj_kin_1b<span class="p">;</span>1    
+  KEY: TH1D    h_mjj_kin_2b<span class="p">;</span>1    
 </code></pre></div></div>
 
-<p>You should draw <code class="language-plaintext highlighter-rouge">h_mjj_kin_cal_2b</code>. You will notice that there are less events but the peak around the Higgs mass is more pronounced.
+<p>You should draw <code class="language-plaintext highlighter-rouge">h_mjj_kin_2b</code>. You will notice that there are less events but the peak around the Higgs mass is more pronounced.
 <img src="./../fig/mjj_2b.jpg" alt="image info" /></p>
 
 <h2 id="selecting-z-candidates">Selecting Z candidates</h2>
@@ -390,6 +405,16 @@ TFile<span class="k">**</span>        myOutputFile.root
   <h2 id="adding-muons">Adding muons</h2>
 
   <p>Modify the if statement above to fill <code class="language-plaintext highlighter-rouge">h_mll_kin</code> if there are exactly 2 electrons or 2 muons and their charges are opposite.</p>
+
+</blockquote>
+
+<blockquote class="solution">
+  <h2 id="solution-1">Solution</h2>
+  <div class="language-plaintext source highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if ( (electrons_kin.size() == 2 &amp;&amp; electrons_kin.at(0).charge() !=  electrons_kin.at(1).charge()) || (muons_kin.size() == 2 &amp;&amp; muons_kin.at(0).charge() !=  muons_kin.at(1).charge()) ){
+if (electrons_kin.size() == 2) h_mll_kin-&gt;Fill( (electrons_kin.at(0).p4()+electrons_kin.at(1).p4()).M()/1000. );
+else h_mll_kin-&gt;Fill( (muons_kin.at(0).p4()+muons_kin.at(1).p4()).M()/1000. );
+}
+</code></pre></div>  </div>
 
 </blockquote>
 
